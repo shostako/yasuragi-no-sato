@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Zen_Maru_Gothic } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const zenMaruGothic = Zen_Maru_Gothic({
   weight: ["400", "500", "700"],
@@ -30,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${zenMaruGothic.variable} font-sans antialiased`}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

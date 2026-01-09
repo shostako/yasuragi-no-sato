@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const navItems = [
   { href: "/", label: "ホーム" },
@@ -9,12 +10,14 @@ const navItems = [
   { href: "/about", label: "施設案内" },
   { href: "/news", label: "お知らせ" },
   { href: "/recruit", label: "採用情報" },
+  { href: "/reservation", label: "見学予約" },
   { href: "/contact", label: "お問い合わせ" },
 ];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -98,11 +101,31 @@ export default function Header() {
               </svg>
               <span className="font-medium">0120-XXX-XXX</span>
             </a>
+            {!loading && (
+              user ? (
+                <Link
+                  href="/member"
+                  className="flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  会員ページ
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+                >
+                  ログイン
+                </Link>
+              )
+            )}
             <Link
-              href="/contact"
+              href="/reservation"
               className="btn-primary text-sm px-5 py-2.5"
             >
-              お問い合わせ
+              見学予約
             </Link>
           </div>
 
@@ -151,12 +174,31 @@ export default function Header() {
               </svg>
               <span className="font-medium">0120-XXX-XXX</span>
             </a>
+            {!loading && (
+              user ? (
+                <Link
+                  href="/member"
+                  className="block w-full text-center py-3 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] font-medium mt-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  会員ページ
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="block w-full text-center py-3 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] font-medium mt-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  ログイン
+                </Link>
+              )
+            )}
             <Link
-              href="/contact"
+              href="/reservation"
               className="block w-full text-center btn-primary mt-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              お問い合わせ
+              見学予約
             </Link>
           </div>
         </nav>
