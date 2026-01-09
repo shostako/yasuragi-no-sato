@@ -1,26 +1,249 @@
 @import "tailwindcss";
 
+/* ============================================
+   介護施設ホームページ デザインシステム
+   コンセプト: やすらぎの木陰（和モダン × ナチュラル）
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* カラーパレット */
+  --color-base: #FAF8F5;
+  --color-base-warm: #F5F0E8;
+  --color-primary: #5D4E3A;
+  --color-primary-light: #7A6B54;
+  --color-secondary: #D4C4B0;
+  --color-secondary-light: #E8DFD3;
+  --color-accent: #8B9A6D;
+  --color-accent-light: #A8B58E;
+  --color-text: #3D3328;
+  --color-text-muted: #6B5D4D;
+  --color-border: #E0D6C8;
+
+  /* 背景・フォアグラウンド */
+  --background: var(--color-base);
+  --foreground: var(--color-text);
+
+  /* シャドウ */
+  --shadow-soft: 0 4px 20px rgba(93, 78, 58, 0.08);
+  --shadow-medium: 0 8px 30px rgba(93, 78, 58, 0.12);
+  --shadow-card: 0 2px 12px rgba(93, 78, 58, 0.06);
+
+  /* アニメーション */
+  --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-base: var(--color-base);
+  --color-base-warm: var(--color-base-warm);
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-light: var(--color-secondary-light);
+  --color-accent: var(--color-accent);
+  --color-accent-light: var(--color-accent-light);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-border: var(--color-border);
+
+  --font-sans: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "BIZ UDGothic", sans-serif;
+  --font-display: "Zen Maru Gothic", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   ベーススタイル
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "palt" 1;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+/* 日本語の文字間調整 */
+h1, h2, h3, h4, h5, h6 {
+  font-feature-settings: "palt" 1;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+/* ============================================
+   カスタムユーティリティ
+   ============================================ */
+
+/* グラデーション背景（木漏れ日風） */
+.bg-gradient-warm {
+  background: linear-gradient(
+    135deg,
+    var(--color-base) 0%,
+    var(--color-base-warm) 50%,
+    var(--color-secondary-light) 100%
+  );
+}
+
+/* テクスチャオーバーレイ（和紙風） */
+.texture-paper {
+  position: relative;
+}
+
+.texture-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* やわらかいボタン */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-base);
+  padding: 0.875rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all var(--duration-normal) var(--ease-gentle);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  padding: 0.875rem 2rem;
+  border: 1.5px solid var(--color-secondary);
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all var(--duration-normal) var(--ease-gentle);
+}
+
+.btn-secondary:hover {
+  background: var(--color-secondary-light);
+  border-color: var(--color-secondary);
+}
+
+/* カード */
+.card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+  transition: all var(--duration-normal) var(--ease-gentle);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-4px);
+}
+
+/* セクションタイトル */
+.section-title {
+  position: relative;
+  display: inline-block;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 3rem;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+/* ============================================
+   アニメーション
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s var(--ease-gentle) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s var(--ease-gentle) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s var(--ease-gentle) forwards;
+}
+
+/* アニメーション遅延 */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* スクロール時のフェードイン用 */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s var(--ease-gentle);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   レスポンシブ調整
+   ============================================ */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 0.9375rem;
+    line-height: 1.9;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
 }

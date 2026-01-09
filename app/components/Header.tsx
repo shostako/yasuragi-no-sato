@@ -1,0 +1,166 @@
+"use client";
+
+import Link from "next/link";
+import { useState, useEffect } from "react";
+
+const navItems = [
+  { href: "/", label: "ホーム" },
+  { href: "/services", label: "サービス紹介" },
+  { href: "/about", label: "施設案内" },
+  { href: "/news", label: "お知らせ" },
+  { href: "/recruit", label: "採用情報" },
+  { href: "/contact", label: "お問い合わせ" },
+];
+
+export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md shadow-sm"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* ロゴ */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 group"
+          >
+            {/* 葉っぱのアイコン */}
+            <div className="relative w-10 h-10">
+              <svg
+                viewBox="0 0 40 40"
+                fill="none"
+                className="w-full h-full"
+              >
+                <path
+                  d="M20 4C12 4 6 12 6 20C6 28 12 36 20 36C20 28 16 20 20 12C24 20 20 28 20 36C28 36 34 28 34 20C34 12 28 4 20 4Z"
+                  fill="var(--color-accent)"
+                  className="transition-all duration-300 group-hover:fill-[var(--color-accent-light)]"
+                />
+                <path
+                  d="M20 12V36"
+                  stroke="var(--color-primary)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-[var(--color-primary)] tracking-wider">
+                やすらぎの郷
+              </span>
+              <span className="text-[10px] text-[var(--color-text-muted)] tracking-widest">
+                YASURAGI NO SATO
+              </span>
+            </div>
+          </Link>
+
+          {/* デスクトップナビゲーション */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="relative px-4 py-2 text-sm font-medium text-[var(--color-text)]
+                         hover:text-[var(--color-primary)] transition-colors duration-200
+                         after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2
+                         after:w-0 after:h-0.5 after:bg-[var(--color-accent)]
+                         after:transition-all after:duration-300
+                         hover:after:w-2/3"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* CTAボタン */}
+          <div className="hidden lg:flex items-center gap-4">
+            <a
+              href="tel:0120-XXX-XXX"
+              className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span className="font-medium">0120-XXX-XXX</span>
+            </a>
+            <Link
+              href="/contact"
+              className="btn-primary text-sm px-5 py-2.5"
+            >
+              お問い合わせ
+            </Link>
+          </div>
+
+          {/* モバイルメニューボタン */}
+          <button
+            className="lg:hidden p-2 text-[var(--color-primary)]"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="メニュー"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* モバイルメニュー */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ${
+          isMobileMenuOpen ? "max-h-screen" : "max-h-0"
+        }`}
+      >
+        <nav className="bg-white border-t border-[var(--color-border)] px-4 py-4">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block py-3 text-[var(--color-text)] hover:text-[var(--color-primary)]
+                       border-b border-[var(--color-border)] last:border-0"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+            <a
+              href="tel:0120-XXX-XXX"
+              className="flex items-center justify-center gap-2 py-3 text-[var(--color-text-muted)]"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span className="font-medium">0120-XXX-XXX</span>
+            </a>
+            <Link
+              href="/contact"
+              className="block w-full text-center btn-primary mt-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              お問い合わせ
+            </Link>
+          </div>
+        </nav>
+      </div>
+    </header>
+  );
+}
