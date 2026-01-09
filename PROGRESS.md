@@ -1,21 +1,24 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-09 10:14
-- **アクティブタスク**: Phase 2準備中
+- **最終更新**: 2026-01-09 11:10
+- **アクティブタスク**: Phase 2進行中（Firebase連携完了）
 
 ## 環境情報
 - **フレームワーク**: Next.js 16.1.1 (App Router)
 - **React**: 19.2.3
 - **Tailwind CSS**: 4.x
-- **バックエンド**: Supabase（未セットアップ）
+- **バックエンド**: Firebase (Firestore)
+- **Firebaseプロジェクト**: yasuragi-no-sato
 - **GitHub**: 未連携
 
 ## 直近のGitコミット
+- `774d23f` docs: PROGRESS.md更新・作業ログ追加
 - `6eb9c53` feat: FAQページを実装（/faq）
 - `16cdd6c` feat: 採用情報ページを実装（/recruit）
 
 ## 完了済み
+### Phase 1: 基本ページ
 - [x] プロジェクト作成（create-next-app）
 - [x] ディレクトリ構造整備
 - [x] 仕様書作成
@@ -27,45 +30,36 @@
   - [x] Header（スクロール対応、モバイルメニュー）
   - [x] Footer
 - [x] トップページ実装
-  - [x] ヒーローセクション
-  - [x] サービス紹介セクション
-  - [x] 施設の特徴セクション
-  - [x] お知らせセクション
-  - [x] アクセスセクション
-  - [x] CTAセクション
-- [x] サービスページ
-  - [x] `/services` - サービス一覧
-  - [x] `/services/[slug]` - サービス詳細（4サービス対応）
-  - [x] `app/data/services.ts` - サービスデータ
-- [x] お問い合わせページ
-  - [x] `/contact` - フォーム（バリデーション付き、送信完了画面）
-- [x] お知らせページ
-  - [x] `/news` - お知らせ一覧
-  - [x] `/news/[id]` - お知らせ詳細（6記事対応）
-  - [x] `app/data/news.ts` - お知らせデータ
-- [x] 施設案内ページ
-  - [x] `/about` - 施設案内トップ（概要、ギャラリー、沿革）
-  - [x] `/about/philosophy` - 理念・方針（ミッション、価値観、施設長メッセージ）
-  - [x] `/about/staff` - スタッフ紹介（6名、チーム体制、研修制度）
-  - [x] `/about/access` - アクセス（交通案内、駐車場、周辺情報）
-  - [x] `app/data/about.ts` - 施設案内データ
-- [x] 採用情報ページ
-  - [x] `/recruit` - 採用情報（4職種、福利厚生、先輩の声、選考フロー、FAQ）
-  - [x] `app/data/recruit.ts` - 採用情報データ
-- [x] FAQページ
-  - [x] `/faq` - よくある質問（4カテゴリ、15件、アコーディオン形式）
-  - [x] `app/data/faq.ts` - FAQデータ
+- [x] サービスページ（/services, /services/[slug]）
+- [x] お問い合わせページ（/contact）
+- [x] お知らせページ（/news, /news/[id]）
+- [x] 施設案内ページ（/about, /about/philosophy, /about/staff, /about/access）
+- [x] 採用情報ページ（/recruit）
+- [x] FAQページ（/faq）
+
+### Phase 2: Firebase連携
+- [x] Firebaseプロジェクト作成（yasuragi-no-sato）
+- [x] Firebase SDK導入
+- [x] Firestore DB作成（東京リージョン）
+- [x] お問い合わせフォーム → Firestore連携（contactsコレクション）
+- [x] お知らせ機能 → Firestore連携（newsコレクション）
+- [x] シードツール作成（/admin/seed）
+
+## Firestoreコレクション
+| コレクション | 用途 | 件数 |
+|-------------|------|------|
+| contacts | お問い合わせ | 1（テスト） |
+| news | お知らせ | 6（シード済み） |
 
 ## 未完了・保留
 - [ ] プライバシーポリシー、利用規約 - 低優先度
-- [ ] Supabaseプロジェクト作成・連携
+- [ ] 見学予約システム - Phase 2
+- [ ] 会員ログイン（Firebase Auth）- Phase 2
 - [ ] デプロイ（Vercel）
 
 ## 次セッションへの引き継ぎ
-- **次のアクション**: Phase 2（Supabase連携）またはプライバシーポリシー等
-- **開発サーバー**: `npm run dev` で http://localhost:3000
-- **画像**: 現在プレースホルダー（picsum.photos）使用中、本番前に差し替え必要
-- **参照ドキュメント**:
-  - `.tmp/requirements.md` - 要件定義
-  - `.tmp/design.md` - デザインシステム
-  - `.tmp/tasks.md` - タスク一覧
+- **次のアクション**: 見学予約システム、会員ログイン、またはデプロイ
+- **開発サーバー**: `npm run dev` で http://localhost:3001（ポート3000が使用中の場合）
+- **Firebase Console**: https://console.firebase.google.com/project/yasuragi-no-sato
+- **画像**: プレースホルダー（picsum.photos）使用中、本番前に差し替え必要
+- **環境変数**: `.env.local` にFirebase設定あり（gitignore済み）

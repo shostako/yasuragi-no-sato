@@ -1,37 +1,26 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
+import { doc, getDoc, collection, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 import { Header, Footer } from "../../components";
-import { newsItems, getNewsById, categoryStyles, getRecentNews } from "../../data/news";
+import { categoryStyles } from "../../data/news";
 
-// 静的パラメータ生成
-export function generateStaticParams() {
-  return newsItems.map((item) => ({
-    id: item.id.toString(),
-  }));
-}
-
-// メタデータ生成
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const news = getNewsById(parseInt(id, 10));
-  if (!news) {
-    return { title: "お知らせが見つかりません | やすらぎの郷" };
-  }
-  return {
-    title: `${news.title} | やすらぎの郷`,
-    description: news.summary,
-  };
+interface NewsItem {
+  id: string;
+  date: string;
+  category: string;
+  title: string;
+  summary: string;
+  content: string;
+  image?: string;
+  published: boolean;
 }
 
 // Markdown風テキストを簡易的にHTMLに変換
-// NOTE: このプロジェクトではコンテンツはハードコードされた静的データのため、
-// XSSのリスクはありません。動的なユーザー入力を扱う場合はDOMPurify等で
-// サニタイズが必要です。
 function parseContent(content: string): string {
   return content
     .split("\n\n")
@@ -90,22 +79,94 @@ function parseContent(content: string): string {
     .join("");
 }
 
-export default async function NewsDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const news = getNewsById(parseInt(id, 10));
+export default function NewsDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
 
-  if (!news) {
+  const [news, setNews] = useState<NewsItem | null>(null);
+  const [otherNews, setOtherNews] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFoundState, setNotFoundState] = useState(false);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      if (!db || !id) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // 記事を取得
+        const docRef = doc(db, "news", id);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists() || !docSnap.data().published) {
+          setNotFoundState(true);
+          setIsLoading(false);
+          return;
+        }
+
+        const data = docSnap.data();
+        setNews({
+          id: docSnap.id,
+          date: data.date,
+          category: data.category,
+          title: data.title,
+          summary: data.summary,
+          content: data.content,
+          image: data.image,
+          published: data.published,
+        });
+
+        // 他のお知らせを取得
+        const newsRef = collection(db, "news");
+        const q = query(newsRef, orderBy("date", "desc"), limit(10));
+        const snapshot = await getDocs(q);
+
+        const others: NewsItem[] = [];
+        snapshot.forEach((doc) => {
+          const d = doc.data();
+          if (doc.id !== id && d.published && others.length < 3) {
+            others.push({
+              id: doc.id,
+              date: d.date,
+              category: d.category,
+              title: d.title,
+              summary: d.summary,
+              content: d.content,
+              image: d.image,
+              published: d.published,
+            });
+          }
+        });
+        setOtherNews(others);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setNotFoundState(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <>
+        <Header />
+        <main className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary)]"></div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (notFoundState || !news) {
     notFound();
   }
 
-  // 他のお知らせを取得（現在の記事以外）
-  const otherNews = newsItems.filter((item) => item.id !== news.id).slice(0, 3);
-
-  // 静的コンテンツをパース（ハードコードされたデータのためXSSリスクなし）
   const parsedContent = parseContent(news.content);
 
   return (
@@ -120,7 +181,7 @@ export default async function NewsDetailPage({
               <time className="text-[var(--color-text-muted)]">{news.date}</time>
               <span
                 className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full ${
-                  categoryStyles[news.category]
+                  categoryStyles[news.category] || "bg-gray-100 text-gray-800"
                 }`}
               >
                 {news.category}
@@ -168,13 +229,13 @@ export default async function NewsDetailPage({
                 </div>
               )}
 
-              {/* 本文 - 静的コンテンツのためXSSリスクなし */}
+              {/* 本文 */}
               <div
                 className="text-[var(--color-text)] prose-custom"
                 dangerouslySetInnerHTML={{ __html: parsedContent }}
               />
 
-              {/* シェアボタン（プレースホルダー） */}
+              {/* シェアボタン */}
               <div className="mt-12 pt-8 border-t border-[var(--color-border)]">
                 <p className="text-sm text-[var(--color-text-muted)] mb-3">この記事をシェア</p>
                 <div className="flex gap-3">
@@ -213,36 +274,38 @@ export default async function NewsDetailPage({
         </section>
 
         {/* 他のお知らせ */}
-        <section className="py-16 bg-[var(--color-base)]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="section-title mb-8">その他のお知らせ</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {otherNews.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/news/${item.id}`}
-                  className="card p-5 group"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <time className="text-xs text-[var(--color-text-muted)]">
-                      {item.date}
-                    </time>
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 text-[10px] font-medium rounded-full ${
-                        categoryStyles[item.category]
-                      }`}
-                    >
-                      {item.category}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-medium text-[var(--color-primary)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2">
-                    {item.title}
-                  </h3>
-                </Link>
-              ))}
+        {otherNews.length > 0 && (
+          <section className="py-16 bg-[var(--color-base)]">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="section-title mb-8">その他のお知らせ</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {otherNews.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={`/news/${item.id}`}
+                    className="card p-5 group"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <time className="text-xs text-[var(--color-text-muted)]">
+                        {item.date}
+                      </time>
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 text-[10px] font-medium rounded-full ${
+                          categoryStyles[item.category] || "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {item.category}
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-medium text-[var(--color-primary)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2">
+                      {item.title}
+                    </h3>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <Footer />

@@ -1,14 +1,66 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import { db } from "../lib/firebase";
 import { Header, Footer } from "../components";
-import { newsItems, categoryStyles } from "../data/news";
+import { categoryStyles } from "../data/news";
 
-export const metadata = {
-  title: "お知らせ | やすらぎの郷",
-  description: "やすらぎの郷からのお知らせ、イベント情報、採用情報などをお届けします。",
-};
+interface NewsItem {
+  id: string;
+  date: string;
+  category: string;
+  title: string;
+  summary: string;
+  image?: string;
+  published: boolean;
+}
 
 export default function NewsPage() {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      if (!db) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const newsRef = collection(db, "news");
+        const q = query(newsRef, orderBy("date", "desc"));
+        const snapshot = await getDocs(q);
+
+        const items: NewsItem[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.published) {
+            items.push({
+              id: doc.id,
+              date: data.date,
+              category: data.category,
+              title: data.title,
+              summary: data.summary,
+              image: data.image,
+              published: data.published,
+            });
+          }
+        });
+
+        setNewsItems(items);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
   return (
     <>
       <Header />
@@ -47,64 +99,76 @@ export default function NewsPage() {
         {/* お知らせ一覧 */}
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="space-y-6">
-              {newsItems.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/news/${item.id}`}
-                  className="block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-[var(--color-border)] group"
-                >
-                  <div className="flex flex-col sm:flex-row">
-                    {/* 画像（あれば表示） */}
-                    {item.image && (
-                      <div className="relative sm:w-48 h-40 sm:h-auto shrink-0">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    )}
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary)]"></div>
+              </div>
+            ) : newsItems.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-[var(--color-text-muted)]">お知らせはありません</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {newsItems.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={`/news/${item.id}`}
+                    className="block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-[var(--color-border)] group"
+                  >
+                    <div className="flex flex-col sm:flex-row">
+                      {/* 画像（あれば表示） */}
+                      {item.image && (
+                        <div className="relative sm:w-48 h-40 sm:h-auto shrink-0">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
 
-                    {/* コンテンツ */}
-                    <div className="p-6 flex-1">
-                      <div className="flex flex-wrap items-center gap-3 mb-3">
-                        <time className="text-sm text-[var(--color-text-muted)]">
-                          {item.date}
-                        </time>
-                        <span
-                          className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full ${
-                            categoryStyles[item.category]
-                          }`}
-                        >
-                          {item.category}
-                        </span>
-                      </div>
-                      <h2 className="text-lg font-semibold text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
-                        {item.title}
-                      </h2>
-                      <p className="text-sm text-[var(--color-text-muted)] line-clamp-2">
-                        {item.summary}
-                      </p>
-                      <div className="mt-4 flex items-center text-sm font-medium text-[var(--color-accent)] group-hover:text-[var(--color-primary)] transition-colors">
-                        続きを読む
-                        <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                      {/* コンテンツ */}
+                      <div className="p-6 flex-1">
+                        <div className="flex flex-wrap items-center gap-3 mb-3">
+                          <time className="text-sm text-[var(--color-text-muted)]">
+                            {item.date}
+                          </time>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full ${
+                              categoryStyles[item.category] || "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {item.category}
+                          </span>
+                        </div>
+                        <h2 className="text-lg font-semibold text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
+                          {item.title}
+                        </h2>
+                        <p className="text-sm text-[var(--color-text-muted)] line-clamp-2">
+                          {item.summary}
+                        </p>
+                        <div className="mt-4 flex items-center text-sm font-medium text-[var(--color-accent)] group-hover:text-[var(--color-primary)] transition-colors">
+                          続きを読む
+                          <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            )}
 
-            {/* ページネーション（将来用のプレースホルダー） */}
-            <div className="mt-12 flex justify-center">
-              <p className="text-sm text-[var(--color-text-muted)]">
-                全{newsItems.length}件を表示中
-              </p>
-            </div>
+            {/* ページネーション */}
+            {!isLoading && newsItems.length > 0 && (
+              <div className="mt-12 flex justify-center">
+                <p className="text-sm text-[var(--color-text-muted)]">
+                  全{newsItems.length}件を表示中
+                </p>
+              </div>
+            )}
           </div>
         </section>
       </main>

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../lib/firebase";
 import { Header, Footer } from "../components";
 
 // お問い合わせ種別
@@ -81,12 +83,30 @@ export default function ContactPage() {
 
     setIsSubmitting(true);
 
-    // TODO: Supabase連携時に実装
-    // 現在はダミーの送信処理
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      if (!db) {
+        throw new Error("Firebase is not initialized");
+      }
+      // Firestoreにお問い合わせを保存
+      await addDoc(collection(db, "contacts"), {
+        inquiryType: formData.inquiryType,
+        name: formData.name,
+        furigana: formData.furigana,
+        email: formData.email,
+        phone: formData.phone,
+        relationship: formData.relationship || null,
+        message: formData.message,
+        status: "new", // 未対応
+        createdAt: serverTimestamp(),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      alert("送信に失敗しました。もう一度お試しください。");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
