@@ -118,7 +118,7 @@ export default function AboutPage() {
               {/* 施設画像 */}
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="https://picsum.photos/seed/facility-main/800/600"
+                  src="/images/hero-building.png"
                   alt="やすらぎの郷 外観"
                   fill
                   className="object-cover"

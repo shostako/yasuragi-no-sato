@@ -83,7 +83,7 @@ export const jobPositions: JobPosition[] = [
       "資格取得支援制度",
       "賞与年2回",
     ],
-    image: "https://picsum.photos/seed/job1/800/500",
+    image: "/images/care-scene.jpg",
   },
   {
     id: "nurse",
@@ -106,7 +106,7 @@ export const jobPositions: JobPosition[] = [
       "オンコール手当",
       "賞与年2回",
     ],
-    image: "https://picsum.photos/seed/job2/800/500",
+    image: "/images/facility-info.jpg",
   },
   {
     id: "care-manager",
@@ -129,7 +129,7 @@ export const jobPositions: JobPosition[] = [
       "研修制度充実",
       "賞与年2回",
     ],
-    image: "https://picsum.photos/seed/job3/800/500",
+    image: "/images/tour.jpg",
   },
   {
     id: "pt-ot",
@@ -152,7 +152,7 @@ export const jobPositions: JobPosition[] = [
       "学会参加費補助",
       "賞与年2回",
     ],
-    image: "https://picsum.photos/seed/job4/800/500",
+    image: "/images/walking-practice.jpg",
   },
 ];
 
@@ -212,7 +212,7 @@ export const staffVoices: StaffVoice[] = [
     message: `未経験からのスタートで不安もありましたが、先輩方が丁寧に教えてくださり、
 今では自信を持って業務に取り組めています。ご利用者様の「ありがとう」という言葉が、
 何よりのやりがいです。研修制度も充実していて、介護福祉士の資格も取得できました。`,
-    image: "https://picsum.photos/seed/voice1/400/400",
+    image: "/images/staff.jpg",
   },
   {
     id: 2,
@@ -222,7 +222,7 @@ export const staffVoices: StaffVoice[] = [
     message: `病院からの転職でしたが、利用者様とじっくり向き合える環境に魅力を感じて入社しました。
 チームワークが良く、困ったときはすぐに相談できる雰囲気があります。
 今は主任として後輩の育成にも携わり、やりがいを感じています。`,
-    image: "https://picsum.photos/seed/voice2/400/400",
+    image: "/images/staff.jpg",
   },
   {
     id: 3,
@@ -232,7 +232,7 @@ export const staffVoices: StaffVoice[] = [
     message: `病院とは違い、利用者様の生活全体を見守れることが魅力です。
 介護スタッフとの連携も良く、チーム全体でケアを行う一体感があります。
 日勤のみでワークライフバランスも取りやすく、家庭との両立ができています。`,
-    image: "https://picsum.photos/seed/voice3/400/400",
+    image: "/images/staff.jpg",
   },
 ];
 

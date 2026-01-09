@@ -31,11 +31,11 @@ export const services: ServiceDetail[] = [
     targetAudience: "要介護1〜5の方",
     schedule: "月曜日〜土曜日 9:00〜16:30",
     capacity: "定員30名",
-    image: "https://picsum.photos/seed/dayservice1/800/600",
+    image: "/images/common-space.jpg",
     gallery: [
-      "https://picsum.photos/seed/dayservice2/600/400",
-      "https://picsum.photos/seed/dayservice3/600/400",
-      "https://picsum.photos/seed/dayservice4/600/400",
+      "/images/care-scene.jpg",
+      "/images/walking-practice.jpg",
+      "/images/stuffed-animals.jpg",
     ],
   },
   {
@@ -55,11 +55,11 @@ export const services: ServiceDetail[] = [
     targetAudience: "要支援1〜2、要介護1〜5の方",
     schedule: "24時間対応（1泊2日〜最長30日）",
     capacity: "定員20名",
-    image: "https://picsum.photos/seed/shortstay1/800/600",
+    image: "/images/private-room.jpg",
     gallery: [
-      "https://picsum.photos/seed/shortstay2/600/400",
-      "https://picsum.photos/seed/shortstay3/600/400",
-      "https://picsum.photos/seed/shortstay4/600/400",
+      "/images/common-space.jpg",
+      "/images/care-scene.jpg",
+      "/images/tour.jpg",
     ],
   },
   {
@@ -79,11 +79,11 @@ export const services: ServiceDetail[] = [
     targetAudience: "要介護1〜5の方",
     schedule: "早朝〜夜間対応可能（事前相談）",
     capacity: "担当ヘルパー制",
-    image: "https://picsum.photos/seed/homecare1/800/600",
+    image: "/images/wheelchair.jpg",
     gallery: [
-      "https://picsum.photos/seed/homecare2/600/400",
-      "https://picsum.photos/seed/homecare3/600/400",
-      "https://picsum.photos/seed/homecare4/600/400",
+      "/images/facility-info.jpg",
+      "/images/care-scene.jpg",
+      "/images/staff.jpg",
     ],
   },
   {
@@ -103,11 +103,11 @@ export const services: ServiceDetail[] = [
     targetAudience: "要支援2、要介護1〜5で認知症の診断がある方",
     schedule: "入居型（24時間365日）",
     capacity: "2ユニット・定員18名",
-    image: "https://picsum.photos/seed/grouphome1/800/600",
+    image: "/images/walk.jpg",
     gallery: [
-      "https://picsum.photos/seed/grouphome2/600/400",
-      "https://picsum.photos/seed/grouphome3/600/400",
-      "https://picsum.photos/seed/grouphome4/600/400",
+      "/images/private-room.jpg",
+      "/images/stuffed-animals.jpg",
+      "/images/common-space.jpg",
     ],
   },
 ];

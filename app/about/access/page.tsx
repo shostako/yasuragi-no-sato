@@ -238,7 +238,7 @@ export default function AccessPage() {
 
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="https://picsum.photos/seed/parking1/800/600"
+                  src="/images/tour.jpg"
                   alt="駐車場"
                   fill
                   className="object-cover"

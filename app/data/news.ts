@@ -90,7 +90,7 @@ export const newsItems: NewsItem[] = [
 ご家族様のご参加も大歓迎です！
 
 皆様のご参加を心よりお待ちしております。`,
-    image: "https://picsum.photos/seed/event1/800/400",
+    image: "/images/stuffed-animals.jpg",
   },
   {
     id: 3,
@@ -173,7 +173,7 @@ export const newsItems: NewsItem[] = [
 ご利用者様の笑顔がたくさん見られた素敵な一日となりました。
 
 来年もまた皆様と楽しいイベントを開催できることを楽しみにしております。`,
-    image: "https://picsum.photos/seed/christmas1/800/400",
+    image: "/images/common-space.jpg",
   },
   {
     id: 5,

@@ -44,7 +44,7 @@ const newsItems = [
 - **場所**: やすらぎの郷 多目的ホール
 - **対象**: ご利用者様、ご家族様
 - **参加費**: 無料`,
-    image: "https://picsum.photos/seed/event1/800/400",
+    image: "/images/stuffed-animals.jpg",
     published: true,
   },
   {
@@ -76,7 +76,7 @@ const newsItems = [
 
 当日は50名を超えるご利用者様とご家族様にご参加いただき、
 賑やかで温かいクリスマス会となりました。`,
-    image: "https://picsum.photos/seed/christmas1/800/400",
+    image: "/images/common-space.jpg",
     published: true,
   },
   {

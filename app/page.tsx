@@ -52,17 +52,17 @@ const features = [
   {
     title: "24時間体制のケア",
     description: "経験豊富なスタッフが24時間体制で見守り、緊急時にも迅速に対応いたします。",
-    image: "https://picsum.photos/seed/care1/600/400",
+    image: "/images/care-scene.jpg",
   },
   {
     title: "充実したリハビリ設備",
     description: "専門の理学療法士による機能訓練で、自立した生活をサポートします。",
-    image: "https://picsum.photos/seed/rehab1/600/400",
+    image: "/images/walking-practice.jpg",
   },
   {
     title: "栄養バランスの取れた食事",
     description: "管理栄養士監修の献立で、美味しく健康的なお食事を提供いたします。",
-    image: "https://picsum.photos/seed/meal1/600/400",
+    image: "/images/common-space.jpg",
   },
 ];
 
@@ -103,16 +103,19 @@ export default function Home() {
         {/* ============================================
             ヒーローセクション
             ============================================ */}
-        <section className="relative min-h-screen flex items-center bg-gradient-warm texture-paper">
+        <section className="relative min-h-screen flex items-center">
           {/* 背景画像 */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="https://picsum.photos/seed/hero1/1920/1080"
-              alt="施設イメージ"
+              src="/images/hero-building.png"
+              alt="やすらぎの郷 施設外観"
               fill
-              className="object-cover opacity-20"
+              className="object-cover"
               priority
             />
+            {/* スモークオーバーレイ（柔らかい印象に） */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent" />
           </div>
 
           {/* コンテンツ */}

@@ -259,7 +259,7 @@ export default function StaffPage() {
 
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="https://picsum.photos/seed/training1/800/600"
+                  src="/images/facility-info.jpg"
                   alt="研修の様子"
                   fill
                   className="object-cover"

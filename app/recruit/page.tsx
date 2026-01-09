@@ -212,7 +212,7 @@ export default function RecruitPage() {
       <main className="flex-1">
         {/* ヒーローセクション */}
         <section className="relative bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white py-24 md:py-32">
-          <div className="absolute inset-0 bg-[url('https://picsum.photos/seed/recruit-hero/1920/600')] bg-cover bg-center opacity-20"></div>
+          <div className="absolute inset-0 bg-[url('/images/hero-building.png')] bg-cover bg-center opacity-20"></div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
               <p className="text-[var(--color-accent)] font-medium mb-4 tracking-wider">

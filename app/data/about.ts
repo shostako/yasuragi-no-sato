@@ -116,7 +116,7 @@ export const philosophy = {
 ぜひ一度、施設にお越しいただき、私たちの想いを感じていただければ幸いです。
 
 皆様のお越しを心よりお待ちしております。`,
-    image: "https://picsum.photos/seed/president1/400/400",
+    image: "/images/facility-info.jpg",
   },
 };
 
@@ -128,7 +128,7 @@ export const staffMembers: StaffMember[] = [
     role: "介護主任",
     department: "デイサービス",
     message: "ご利用者様の笑顔が私の原動力です。一人ひとりに寄り添ったケアを心がけています。",
-    image: "https://picsum.photos/seed/staff1/400/400",
+    image: "/images/staff.jpg",
     qualifications: ["介護福祉士", "認知症ケア専門士"],
   },
   {
@@ -137,7 +137,7 @@ export const staffMembers: StaffMember[] = [
     role: "理学療法士",
     department: "リハビリテーション",
     message: "「できた！」という喜びを一緒に分かち合えることが、この仕事のやりがいです。",
-    image: "https://picsum.photos/seed/staff2/400/400",
+    image: "/images/staff.jpg",
     qualifications: ["理学療法士", "介護支援専門員"],
   },
   {
@@ -146,7 +146,7 @@ export const staffMembers: StaffMember[] = [
     role: "看護師",
     department: "医療ケア",
     message: "ご利用者様の健康を守り、安心して過ごせる環境づくりに貢献しています。",
-    image: "https://picsum.photos/seed/staff3/400/400",
+    image: "/images/staff.jpg",
     qualifications: ["看護師", "准看護師"],
   },
   {
@@ -155,7 +155,7 @@ export const staffMembers: StaffMember[] = [
     role: "ケアマネージャー",
     department: "相談支援",
     message: "ご利用者様とご家族様の架け橋となり、最適なケアプランをご提案します。",
-    image: "https://picsum.photos/seed/staff4/400/400",
+    image: "/images/staff.jpg",
     qualifications: ["介護支援専門員", "社会福祉士"],
   },
   {
@@ -164,7 +164,7 @@ export const staffMembers: StaffMember[] = [
     role: "管理栄養士",
     department: "栄養管理",
     message: "「おいしい！」の声が何より嬉しい。栄養バランスと味の両立を大切にしています。",
-    image: "https://picsum.photos/seed/staff5/400/400",
+    image: "/images/staff.jpg",
     qualifications: ["管理栄養士"],
   },
   {
@@ -173,7 +173,7 @@ export const staffMembers: StaffMember[] = [
     role: "介護スタッフ",
     department: "グループホーム",
     message: "入居者様との日々の触れ合いを大切に、家庭的な雰囲気づくりを心がけています。",
-    image: "https://picsum.photos/seed/staff6/400/400",
+    image: "/images/staff.jpg",
     qualifications: ["介護福祉士"],
   },
 ];
@@ -218,36 +218,36 @@ export const facilityGallery = [
     id: 1,
     title: "エントランス",
     description: "明るく開放的なエントランスでお迎えします",
-    image: "https://picsum.photos/seed/gallery1/800/600",
+    image: "/images/hero-building.png",
   },
   {
     id: 2,
     title: "デイルーム",
     description: "広々としたデイルームでレクリエーションを行います",
-    image: "https://picsum.photos/seed/gallery2/800/600",
+    image: "/images/common-space.jpg",
   },
   {
     id: 3,
     title: "機能訓練室",
     description: "充実したリハビリ設備を完備しています",
-    image: "https://picsum.photos/seed/gallery3/800/600",
+    image: "/images/walking-practice.jpg",
   },
   {
     id: 4,
     title: "浴室",
     description: "安全に配慮したバリアフリー設計の浴室",
-    image: "https://picsum.photos/seed/gallery4/800/600",
+    image: "/images/tour.jpg",
   },
   {
     id: 5,
     title: "居室",
     description: "快適に過ごせるプライベート空間",
-    image: "https://picsum.photos/seed/gallery5/800/600",
+    image: "/images/private-room.jpg",
   },
   {
     id: 6,
     title: "中庭",
     description: "四季折々の風景を楽しめる中庭",
-    image: "https://picsum.photos/seed/gallery6/800/600",
+    image: "/images/walk.jpg",
   },
 ];
