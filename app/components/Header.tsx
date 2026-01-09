@@ -73,12 +73,13 @@ export default function Header() {
           </Link>
 
           {/* デスクトップナビゲーション */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-0.5">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="relative px-4 py-2 text-sm font-medium text-[var(--color-text)]
+                className="relative px-3 py-2 text-sm font-medium text-[var(--color-text)]
+                         whitespace-nowrap
                          hover:text-[var(--color-primary)] transition-colors duration-200
                          after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2
                          after:w-0 after:h-0.5 after:bg-[var(--color-accent)]
@@ -91,12 +92,12 @@ export default function Header() {
           </nav>
 
           {/* CTAボタン */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-3">
             <a
               href="tel:0120-XXX-XXX"
-              className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]"
+              className="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] whitespace-nowrap"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
               <span className="font-medium">0120-XXX-XXX</span>
@@ -105,9 +106,9 @@ export default function Header() {
               user ? (
                 <Link
                   href="/member"
-                  className="flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors"
+                  className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors whitespace-nowrap"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                   会員ページ
@@ -115,7 +116,7 @@ export default function Header() {
               ) : (
                 <Link
                   href="/login"
-                  className="flex items-center gap-2 text-sm px-5 py-2.5 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+                  className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors whitespace-nowrap"
                 >
                   ログイン
                 </Link>
@@ -123,7 +124,7 @@ export default function Header() {
             )}
             <Link
               href="/reservation"
-              className="btn-primary text-sm px-5 py-2.5"
+              className="btn-primary text-sm px-4 py-2 whitespace-nowrap"
             >
               見学予約
             </Link>
@@ -131,7 +132,7 @@ export default function Header() {
 
           {/* モバイルメニューボタン */}
           <button
-            className="lg:hidden p-2 text-[var(--color-primary)]"
+            className="xl:hidden p-2 text-[var(--color-primary)]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="メニュー"
           >
@@ -148,26 +149,26 @@ export default function Header() {
 
       {/* モバイルメニュー */}
       <div
-        className={`lg:hidden overflow-hidden transition-all duration-300 ${
+        className={`xl:hidden overflow-hidden transition-all duration-300 ${
           isMobileMenuOpen ? "max-h-screen" : "max-h-0"
         }`}
       >
-        <nav className="bg-white border-t border-[var(--color-border)] px-4 py-4">
+        <nav className="bg-white border-t border-l border-[var(--color-border)] px-4 py-2 ml-auto w-64 shadow-lg">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="block py-3 text-[var(--color-text)] hover:text-[var(--color-primary)]
+              className="block py-2.5 text-sm text-[var(--color-text)] hover:text-[var(--color-primary)]
                        border-b border-[var(--color-border)] last:border-0"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {item.label}
             </Link>
           ))}
-          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
+          <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
             <a
               href="tel:0120-XXX-XXX"
-              className="flex items-center justify-center gap-2 py-3 text-[var(--color-text-muted)]"
+              className="flex items-center justify-center gap-2 py-2 text-sm text-[var(--color-text-muted)]"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -178,7 +179,7 @@ export default function Header() {
               user ? (
                 <Link
                   href="/member"
-                  className="block w-full text-center py-3 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] font-medium mt-2"
+                  className="block w-full text-center py-2.5 text-sm rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] font-medium mt-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   会員ページ
@@ -186,7 +187,7 @@ export default function Header() {
               ) : (
                 <Link
                   href="/login"
-                  className="block w-full text-center py-3 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] font-medium mt-2"
+                  className="block w-full text-center py-2.5 text-sm rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] font-medium mt-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   ログイン
@@ -195,7 +196,7 @@ export default function Header() {
             )}
             <Link
               href="/reservation"
-              className="block w-full text-center btn-primary mt-2"
+              className="block w-full text-center btn-primary text-sm py-2.5 mt-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               見学予約
