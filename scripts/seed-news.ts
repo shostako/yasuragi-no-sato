@@ -55,6 +55,7 @@ const newsItems = [
 **緊急連絡先：090-XXXX-XXXX**
 
 ご不便をおかけいたしますが、何卒ご理解のほどよろしくお願いいたします。`,
+    image: "/images/news/new-year.jpg",
     published: true,
   },
   {
@@ -94,7 +95,7 @@ const newsItems = [
 ご家族様のご参加も大歓迎です！
 
 皆様のご参加を心よりお待ちしております。`,
-    image: "https://picsum.photos/seed/event1/800/400",
+    image: "/images/news/kakizome.jpg",
     published: true,
   },
   {
@@ -141,6 +142,7 @@ const newsItems = [
 **TEL: 0120-XXX-XXX（採用担当）**
 
 皆様からのご応募をお待ちしております。`,
+    image: "/images/news/staff-training.jpg",
     published: true,
   },
   {
@@ -179,7 +181,7 @@ const newsItems = [
 ご利用者様の笑顔がたくさん見られた素敵な一日となりました。
 
 来年もまた皆様と楽しいイベントを開催できることを楽しみにしております。`,
-    image: "https://picsum.photos/seed/christmas1/800/400",
+    image: "/images/news/christmas.jpg",
     published: true,
   },
   {
@@ -218,6 +220,7 @@ const newsItems = [
 - 感染拡大防止措置
 
 ご理解とご協力のほど、よろしくお願いいたします。`,
+    image: "/images/news/infection-prevention.jpg",
     published: true,
   },
   {
@@ -249,6 +252,7 @@ const newsItems = [
 
 「〇〇タウン」12月号は、地域の公共施設や商店などで無料配布されております。
 ぜひお手に取ってご覧ください。`,
+    image: "/images/news/media-coverage.jpg",
     published: true,
   },
 ];

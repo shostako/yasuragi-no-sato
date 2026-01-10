@@ -26,6 +26,7 @@ const newsItems = [
 | 1月2日（金） | 休業 |
 | 1月3日（土） | 休業 |
 | 1月4日（日） | 通常営業 |`,
+    image: "/images/news/new-year.jpg",
     published: true,
   },
   {
@@ -44,7 +45,7 @@ const newsItems = [
 - **場所**: やすらぎの郷 多目的ホール
 - **対象**: ご利用者様、ご家族様
 - **参加費**: 無料`,
-    image: "/images/stuffed-animals.jpg",
+    image: "/images/news/kakizome.jpg",
     published: true,
   },
   {
@@ -62,6 +63,7 @@ const newsItems = [
 - **給与**: 月給22万円〜30万円（経験・資格により優遇）
 - **勤務時間**: シフト制（実働8時間）
 - **休日**: 週休2日制（シフト制）、年間休日110日`,
+    image: "/images/news/staff-training.jpg",
     published: true,
   },
   {
@@ -76,7 +78,7 @@ const newsItems = [
 
 当日は50名を超えるご利用者様とご家族様にご参加いただき、
 賑やかで温かいクリスマス会となりました。`,
-    image: "/images/common-space.jpg",
+    image: "/images/news/christmas.jpg",
     published: true,
   },
   {
@@ -94,6 +96,7 @@ const newsItems = [
 - 手指消毒の徹底
 - 施設内の換気強化
 - 加湿器の設置`,
+    image: "/images/news/infection-prevention.jpg",
     published: true,
   },
   {
@@ -107,6 +110,7 @@ const newsItems = [
 ## 掲載内容
 
 「地域に根ざした介護施設」をテーマに、当施設の取り組みや特徴について取材いただきました。`,
+    image: "/images/news/media-coverage.jpg",
     published: true,
   },
 ];
