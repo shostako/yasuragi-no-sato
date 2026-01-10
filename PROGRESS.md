@@ -1,7 +1,7 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-09 17:43
+- **最終更新**: 2026-01-11 08:25
 - **ステータス**: Phase 2完了・本番デプロイ済み
 
 ## 環境情報
@@ -14,8 +14,8 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
-- `84defe0` feat: プレースホルダー画像を実画像に置き換え
-- `8db296b` docs: PROGRESS.md更新・作業ログ追加
+- `f20d66c` feat: お知らせ用AI生成画像を追加
+- `c77600c` docs: セッション運用フィードバックを追記
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -48,6 +48,7 @@
 - [x] モバイルメニュー改善（右寄せ・狭幅）
 - [x] 依頼者向け説明資料作成（docs/）
 - [x] 画像差し替え（プレースホルダー → 実画像・スモークオーバーレイ追加）
+- [x] お知らせ用AI生成画像追加（Nano Banana Pro / Gemini 3 Pro Image）
 
 ## Firestoreコレクション
 | コレクション | 用途 | 件数 |
@@ -77,3 +78,10 @@
 4. ゼロからデザインを考える手間が省ける
 
 Figma MCP接続済み（菊池剛アカウント）、Starterプラン（無料・3ファイルまで）
+
+### Nano Banana Pro（AI画像生成）
+- **モデル**: `gemini-3-pro-image-preview`（Google AI Studio API）
+- **スクリプト**: `scripts/generate-image.py`
+- **使い方**: `python scripts/generate-image.py "プロンプト" "出力パス"`
+- **制限**: 連続6〜7枚で制限、5時間後にリセット
+- **Antigravity IDE**: 接続したがノートブック実行に失敗、結局Bashから直接実行した方が効率的だった
