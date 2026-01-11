@@ -1,7 +1,7 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-11 09:35
+- **最終更新**: 2026-01-11 11:25
 - **ステータス**: Phase 2完了・本番デプロイ済み
 
 ## 環境情報
@@ -14,8 +14,8 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
-- `f20d66c` feat: お知らせ用AI生成画像を追加
-- `c77600c` docs: セッション運用フィードバックを追記
+- `67ee8b5` feat: Nano Banana Pro Skill作成・クリスマス画像更新
+- `43ad7f0` fix: お知らせ詳細ページの画像表示を修正
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -81,10 +81,26 @@ Figma MCP接続済み（菊池剛アカウント）、Starterプラン（無料�
 
 ### Nano Banana Pro（AI画像生成）
 - **モデル**: `gemini-3-pro-image-preview`（Google AI Studio API）
-- **スクリプト**: `scripts/generate-image.py`
-- **使い方**: `python scripts/generate-image.py "プロンプト" "出力パス"`
-- **制限**: 連続6〜7枚で制限、5時間後にリセット
-- **Antigravity IDE**: 接続したがノートブック実行に失敗、結局Bashから直接実行した方が効率的だった
-- **Claude Code Skill作成済**: `~/.claude/skills/nano-banana-pro/SKILL.md`
+- **Claude Code Skill**: `~/.claude/skills/nano-banana-pro/SKILL.md`
 - **スクリプト**: `~/.claude/scripts/nano-banana-pro.py`
 - **APIキー**: `~/.claude/.env` に保存
+
+#### 機能
+| モード | 使い方 |
+|--------|--------|
+| 新規生成 | `python nano-banana-pro.py "プロンプト" -o "出力パス"` |
+| 画像編集 | `python nano-banana-pro.py "指示" --image "元画像" -o "出力パス"` |
+
+#### マーキングツール（Annotate風）
+- **スクリプト**: `~/.claude/scripts/mark-image.py`
+- **操作**: ドラッグで自由サイズの赤い丸を描画 → 閉じると保存
+- **編集時**: 赤い丸は自動的に最終画像から削除される
+
+#### 料金（Tier 1 / 有料プラン）
+| 解像度 | 料金 |
+|--------|------|
+| 1K〜2K | $0.134/枚（約20円） |
+| 4K | $0.24/枚（約36円） |
+
+- **無料枠**: Free Tierは毎日リセット（太平洋時間0時）だが制限厳しい
+- **Tier 1**: 1枚目から課金、安定して使える
