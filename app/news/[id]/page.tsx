@@ -8,6 +8,8 @@ import { doc, getDoc, collection, query, orderBy, limit, getDocs } from "firebas
 import { db } from "../../lib/firebase";
 import { Header, Footer } from "../../components";
 import { categoryStyles } from "../../data/news";
+import NewsImageGallery from "../../components/NewsImageGallery";
+import { NewsImage, ImageLayout } from "../../types/news";
 
 interface NewsItem {
   id: string;
@@ -17,6 +19,8 @@ interface NewsItem {
   summary: string;
   content: string;
   image?: string;
+  images?: NewsImage[];
+  imageLayout?: ImageLayout;
   published: boolean;
 }
 
@@ -115,6 +119,8 @@ export default function NewsDetailPage() {
           summary: data.summary,
           content: data.content,
           image: data.image,
+          images: data.images,
+          imageLayout: data.imageLayout,
           published: data.published,
         });
 
@@ -216,8 +222,13 @@ export default function NewsDetailPage() {
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <article className="bg-white">
-              {/* アイキャッチ画像 */}
-              {news.image && (
+              {/* 画像（複数対応） */}
+              {news.images && news.images.length > 0 ? (
+                <NewsImageGallery
+                  images={news.images}
+                  layout={news.imageLayout || "single"}
+                />
+              ) : news.image ? (
                 <div className="relative aspect-[2/1] rounded-2xl overflow-hidden mb-8">
                   <Image
                     src={news.image}
@@ -229,7 +240,7 @@ export default function NewsDetailPage() {
                     unoptimized
                   />
                 </div>
-              )}
+              ) : null}
 
               {/* 本文 */}
               <div
