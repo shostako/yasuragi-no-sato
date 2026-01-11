@@ -149,11 +149,11 @@ export default function Header() {
 
       {/* モバイルメニュー */}
       <div
-        className={`xl:hidden overflow-hidden transition-all duration-300 ${
+        className={`xl:hidden absolute top-20 right-0 overflow-hidden transition-all duration-300 ${
           isMobileMenuOpen ? "max-h-screen" : "max-h-0"
         }`}
       >
-        <nav className="bg-white border-t border-l border-[var(--color-border)] px-4 py-2 ml-auto w-64 shadow-lg">
+        <nav className="bg-white border-t border-l border-[var(--color-border)] px-4 py-2 w-64 shadow-lg">
           {navItems.map((item) => (
             <Link
               key={item.href}

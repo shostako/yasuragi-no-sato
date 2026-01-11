@@ -69,6 +69,7 @@ body {
   font-feature-settings: "palt" 1;
   line-height: 1.8;
   letter-spacing: 0.02em;
+  overflow-x: hidden;
 }
 
 /* 日本語の文字間調整 */
