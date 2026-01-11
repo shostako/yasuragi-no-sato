@@ -10,6 +10,7 @@ import { Header, Footer } from "../../components";
 import { categoryStyles } from "../../data/news";
 import NewsImageGallery from "../../components/NewsImageGallery";
 import { NewsImage, ImageLayout } from "../../types/news";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface NewsItem {
   id: string;
@@ -86,6 +87,7 @@ function parseContent(content: string): string {
 export default function NewsDetailPage() {
   const params = useParams();
   const id = params.id as string;
+  const { adminMode } = useAuth();
 
   const [news, setNews] = useState<NewsItem | null>(null);
   const [otherNews, setOtherNews] = useState<NewsItem[]>([]);
@@ -192,6 +194,18 @@ export default function NewsDetailPage() {
               >
                 {news.category}
               </span>
+              {/* 管理者モード: 編集ボタン */}
+              {adminMode && (
+                <Link
+                  href={`/admin/news/${id}/edit`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  編集
+                </Link>
+              )}
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-primary)] leading-tight">
               {news.title}

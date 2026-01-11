@@ -17,7 +17,7 @@ const navItems = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin, adminMode, setAdminMode } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,6 +93,22 @@ export default function Header() {
 
           {/* CTAボタン */}
           <div className="hidden xl:flex items-center gap-3">
+            {/* 管理者モードトグル */}
+            {isAdmin && (
+              <button
+                onClick={() => setAdminMode(!adminMode)}
+                className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full transition-colors whitespace-nowrap ${
+                  adminMode
+                    ? "bg-[var(--color-primary)] text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                {adminMode ? "編集中" : "編集"}
+              </button>
+            )}
             <a
               href="tel:0120-XXX-XXX"
               className="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] whitespace-nowrap"
@@ -174,6 +190,22 @@ export default function Header() {
             </Link>
           ))}
           <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
+            {/* 管理者モードトグル（モバイル） */}
+            {isAdmin && (
+              <button
+                onClick={() => setAdminMode(!adminMode)}
+                className={`w-full flex items-center justify-center gap-2 py-2.5 text-sm rounded-full font-medium mb-2 transition-colors ${
+                  adminMode
+                    ? "bg-[var(--color-primary)] text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                {adminMode ? "編集モードON" : "編集モード"}
+              </button>
+            )}
             <a
               href="tel:0120-XXX-XXX"
               className="flex items-center justify-center gap-2 py-2 text-sm text-[var(--color-text-muted)]"

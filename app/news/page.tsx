@@ -7,6 +7,7 @@ import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { Header, Footer } from "../components";
 import { categoryStyles } from "../data/news";
+import { useAuth } from "../contexts/AuthContext";
 
 interface NewsItem {
   id: string;
@@ -19,6 +20,7 @@ interface NewsItem {
 }
 
 export default function NewsPage() {
+  const { adminMode } = useAuth();
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -79,6 +81,18 @@ export default function NewsPage() {
               <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto">
                 やすらぎの郷からのお知らせ、イベント情報をお届けします。
               </p>
+              {/* 管理者モード: 新規投稿ボタン */}
+              {adminMode && (
+                <Link
+                  href="/admin/news/new"
+                  className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-[var(--color-primary)] text-white rounded-full font-medium hover:bg-[var(--color-primary-dark)] transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  新規投稿
+                </Link>
+              )}
             </div>
           </div>
         </section>
