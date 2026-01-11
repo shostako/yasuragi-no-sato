@@ -10,7 +10,8 @@ import {
   sendPasswordResetEmail,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../lib/firebase";
 
 interface AuthContextType {
   user: User | null;
@@ -43,9 +44,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string, displayName: string) => {
     if (!auth) throw new Error("Firebase Auth is not initialized");
+    if (!db) throw new Error("Firebase Firestore is not initialized");
 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCredential.user, { displayName });
+
+    // Firestoreにユーザー情報を保存（デフォルトは一般会員）
+    await setDoc(doc(db, "users", userCredential.user.uid), {
+      uid: userCredential.user.uid,
+      email: userCredential.user.email,
+      displayName: displayName,
+      role: "member", // デフォルトは一般会員
+      createdAt: new Date().toISOString(),
+    });
   };
 
   const signIn = async (email: string, password: string) => {
