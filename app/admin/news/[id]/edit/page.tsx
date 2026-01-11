@@ -9,6 +9,7 @@ import { NewsFormData, NewsCategory, ImageLayout, NewsImage } from "../../../../
 import ImageUploader from "../../../../components/admin/ImageUploader";
 import ImageLayoutSelector from "../../../../components/admin/ImageLayoutSelector";
 import AdminAuthGuard from "../../../../components/admin/AdminAuthGuard";
+import { Header, Footer } from "../../../../components";
 import { ArrowLeft, Save, Eye } from "lucide-react";
 import Link from "next/link";
 
@@ -170,8 +171,10 @@ export default function EditNewsPage() {
 
   return (
     <AdminAuthGuard>
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-5xl mx-auto p-6">
+      <>
+        <Header />
+        <main className="pt-32 pb-16 min-h-screen bg-gray-50">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ヘッダー */}
         <div className="mb-6">
           <Link
@@ -372,8 +375,10 @@ export default function EditNewsPage() {
             </div>
           </div>
         )}
-        </div>
-      </div>
+          </div>
+        </main>
+        <Footer />
+      </>
     </AdminAuthGuard>
   );
 }

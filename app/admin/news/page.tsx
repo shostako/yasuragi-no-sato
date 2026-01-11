@@ -7,6 +7,7 @@ import { News } from "../../types/news";
 import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, EyeOff, Calendar, Tag } from "lucide-react";
 import AdminAuthGuard from "../../components/admin/AdminAuthGuard";
+import { Header, Footer } from "../../components";
 
 export default function AdminNewsPage() {
   const [newsList, setNewsList] = useState<News[]>([]);
@@ -85,8 +86,10 @@ export default function AdminNewsPage() {
 
   return (
     <AdminAuthGuard>
-      <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto p-6">
+      <>
+        <Header />
+        <main className="pt-32 pb-16 min-h-screen bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ヘッダー */}
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -249,8 +252,10 @@ export default function AdminNewsPage() {
             ))}
           </div>
         )}
-      </div>
-    </div>
+          </div>
+        </main>
+        <Footer />
+      </>
     </AdminAuthGuard>
   );
 }
