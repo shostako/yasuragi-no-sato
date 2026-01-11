@@ -1,7 +1,7 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-11 08:25
+- **最終更新**: 2026-01-11 09:35
 - **ステータス**: Phase 2完了・本番デプロイ済み
 
 ## 環境情報
@@ -85,3 +85,6 @@ Figma MCP接続済み（菊池剛アカウント）、Starterプラン（無料�
 - **使い方**: `python scripts/generate-image.py "プロンプト" "出力パス"`
 - **制限**: 連続6〜7枚で制限、5時間後にリセット
 - **Antigravity IDE**: 接続したがノートブック実行に失敗、結局Bashから直接実行した方が効率的だった
+- **Claude Code Skill作成済**: `~/.claude/skills/nano-banana-pro/SKILL.md`
+- **スクリプト**: `~/.claude/scripts/nano-banana-pro.py`
+- **APIキー**: `~/.claude/.env` に保存
