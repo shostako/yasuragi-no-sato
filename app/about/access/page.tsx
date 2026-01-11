@@ -52,19 +52,18 @@ export default function AccessPage() {
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* 地図（プレースホルダー） */}
-              <div className="aspect-[4/3] lg:aspect-auto lg:h-full min-h-[400px] bg-[var(--color-secondary-light)] rounded-2xl flex items-center justify-center overflow-hidden">
-                <div className="text-center text-[var(--color-text-muted)] p-8">
-                  <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                  </svg>
-                  <p className="text-lg font-medium mb-2">Google Maps</p>
-                  <p className="text-sm">ここにGoogle Mapsが埋め込まれます</p>
-                  <p className="text-xs mt-4 opacity-75">
-                    ※本番環境ではGoogle Maps APIを使用して<br />
-                    実際の地図を表示します
-                  </p>
-                </div>
+              {/* 地図 */}
+              <div className="aspect-[4/3] lg:aspect-auto lg:h-full min-h-[400px] rounded-2xl overflow-hidden shadow-lg">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.4547820869913!2d139.68917131525882!3d35.689651179584654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188cd0d848d5e5%3A0x7fbd5b7b2c7c5c5c!2z5p2x5Lqs6YO95bqB!5e0!3m2!1sja!2sjp!4v1704931200000!5m2!1sja!2sjp"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="やすらぎの郷 所在地"
+                ></iframe>
               </div>
 
               {/* 施設情報 */}
@@ -116,7 +115,7 @@ export default function AccessPage() {
                 {/* 外部マップリンク */}
                 <div className="flex flex-wrap gap-4">
                   <a
-                    href="https://maps.google.com/?q=東京都〇〇区〇〇町1-2-3"
+                    href="https://maps.google.com/?q=東京都新宿区西新宿2-8-1+東京都庁"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-full font-medium hover:bg-[var(--color-primary-light)] transition-colors"
@@ -128,7 +127,7 @@ export default function AccessPage() {
                     Google Mapsで見る
                   </a>
                   <a
-                    href="https://maps.apple.com/?address=東京都〇〇区〇〇町1-2-3"
+                    href="https://maps.apple.com/?address=東京都新宿区西新宿2-8-1"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[var(--color-primary)] text-[var(--color-primary)] rounded-full font-medium hover:bg-[var(--color-base)] transition-colors"
