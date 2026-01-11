@@ -147,9 +147,17 @@ export default function Header() {
         </div>
       </div>
 
+      {/* モバイルメニュー背景オーバーレイ */}
+      {isMobileMenuOpen && (
+        <div
+          className="xl:hidden fixed inset-0 top-20 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* モバイルメニュー */}
       <div
-        className={`xl:hidden absolute top-20 right-0 overflow-hidden transition-all duration-300 ${
+        className={`xl:hidden absolute top-20 right-0 z-50 overflow-hidden transition-all duration-300 ${
           isMobileMenuOpen ? "max-h-screen" : "max-h-0"
         }`}
       >
