@@ -57,6 +57,25 @@ export default function AdminSetupPage() {
     }
   };
 
+  // 環境変数でガード（本番では無効化）
+  if (process.env.NEXT_PUBLIC_ENABLE_ADMIN_SETUP !== "true") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center p-8">
+          <div className="bg-white border-2 border-gray-200 rounded-lg p-8">
+            <ShieldCheck className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              このページは無効化されています
+            </h1>
+            <p className="text-gray-600">
+              管理者設定はFirebase Consoleから行ってください。
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">

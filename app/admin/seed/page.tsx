@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../lib/firebase";
+import { AdminAuthGuard } from "../../components/admin/AdminAuthGuard";
 
 const newsItems = [
   {
@@ -148,27 +149,29 @@ export default function SeedPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold mb-4">Database Seed Tool</h1>
-        <p className="text-gray-600 mb-6">
-          Click the button below to seed the news collection with initial data.
-        </p>
+    <AdminAuthGuard>
+      <div className="min-h-screen bg-gray-100 p-8">
+        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
+          <h1 className="text-2xl font-bold mb-4">Database Seed Tool</h1>
+          <p className="text-gray-600 mb-6">
+            Click the button below to seed the news collection with initial data.
+          </p>
 
-        <button
-          onClick={seedNews}
-          disabled={isLoading}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? "Seeding..." : "Seed News Data"}
-        </button>
+          <button
+            onClick={seedNews}
+            disabled={isLoading}
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "Seeding..." : "Seed News Data"}
+          </button>
 
-        {status && (
-          <pre className="mt-6 p-4 bg-gray-900 text-green-400 rounded overflow-auto whitespace-pre-wrap text-sm">
-            {status}
-          </pre>
-        )}
+          {status && (
+            <pre className="mt-6 p-4 bg-gray-900 text-green-400 rounded overflow-auto whitespace-pre-wrap text-sm">
+              {status}
+            </pre>
+          )}
+        </div>
       </div>
-    </div>
+    </AdminAuthGuard>
   );
 }
