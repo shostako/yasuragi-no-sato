@@ -417,7 +417,7 @@ export default function RecruitPage() {
                 >
                   {/* 引用符装飾 */}
                   <div className="absolute top-4 right-4 text-6xl text-[var(--color-primary)]/10 font-serif leading-none">
-                    "
+                    &rdquo;
                   </div>
 
                   <div className="flex items-center gap-4 mb-6">

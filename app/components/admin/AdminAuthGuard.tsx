@@ -13,13 +13,13 @@ interface AdminAuthGuardProps {
 
 export default function AdminAuthGuard({ children }: AdminAuthGuardProps) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  // auth/dbが存在しない場合は最初からローディング完了とする
+  const [isLoading, setIsLoading] = useState(Boolean(auth && db));
   const [isAdmin, setIsAdmin] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
     if (!auth || !db) {
-      setIsLoading(false);
       return;
     }
 
@@ -27,6 +27,11 @@ export default function AdminAuthGuard({ children }: AdminAuthGuardProps) {
       if (!user) {
         // ログインしていない場合はログインページへリダイレクト
         router.push("/login?redirect=/admin/news");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!db) {
         setIsLoading(false);
         return;
       }

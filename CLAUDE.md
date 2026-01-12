@@ -5,9 +5,9 @@
 
 ## 技術スタック
 - **フレームワーク**: Next.js 16 (App Router)
-- **バックエンド/DB**: Supabase (PostgreSQL, Auth)
-- **スタイリング**: Tailwind CSS 4 + shadcn/ui
-- **デプロイ**: Vercel（予定）
+- **バックエンド/DB**: Firebase (Firestore, Auth, Storage)
+- **スタイリング**: Tailwind CSS 4
+- **デプロイ**: Vercel
 
 ## デザイン方針
 - **カラーパレット**: 茶系・ベージュ・オフホワイト（暖色系で安心感）
@@ -25,9 +25,9 @@
 ## 機能
 | 機能 | 実装方法 |
 |------|----------|
-| 予約システム | Supabase DB + カレンダーUI |
-| ブログ更新 | Supabase + 管理画面 |
-| 会員ログイン | Supabase Auth |
+| 予約システム | Firestore + カレンダーUI |
+| ブログ更新 | Firestore + 管理画面 |
+| 会員ログイン | Firebase Auth |
 
 ## セッション開始時の必須アクション
 **重要：新しいセッションでこのプロジェクトに入った際は、以下を最初に実行すること**

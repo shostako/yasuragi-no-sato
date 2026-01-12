@@ -177,7 +177,7 @@ export default function PhilosophyPage() {
                 <div className="bg-[var(--color-base)] rounded-2xl p-8 sm:p-10 relative">
                   {/* 装飾的な引用符 */}
                   <div className="absolute top-4 left-6 text-6xl text-[var(--color-secondary)] font-serif opacity-30">
-                    "
+                    &ldquo;
                   </div>
                   <div className="relative">
                     <p className="text-[var(--color-text)] leading-loose whitespace-pre-line pt-8">

@@ -29,13 +29,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  // authが存在しない場合は最初からローディング完了とする
+  const [loading, setLoading] = useState(Boolean(auth));
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
 
   useEffect(() => {
     if (!auth) {
-      setLoading(false);
       return;
     }
 
