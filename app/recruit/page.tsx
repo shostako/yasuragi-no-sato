@@ -1,6 +1,7 @@
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import {
   recruitMessage,
   jobPositions,
@@ -274,10 +275,11 @@ export default function RecruitPage() {
                   <div className="md:flex">
                     <div className="md:w-1/3">
                       <div className="relative h-64 md:h-full">
-                        <img
+                        <Image
                           src={job.image}
                           alt={job.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                         <div className="absolute top-4 left-4">
                           <span className="bg-[var(--color-primary)] text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -421,10 +423,12 @@ export default function RecruitPage() {
                   </div>
 
                   <div className="flex items-center gap-4 mb-6">
-                    <img
+                    <Image
                       src={voice.image}
                       alt={voice.name}
-                      className="w-16 h-16 rounded-full object-cover"
+                      width={64}
+                      height={64}
+                      className="rounded-full object-cover"
                     />
                     <div>
                       <h3 className="font-bold text-[var(--color-text)]">

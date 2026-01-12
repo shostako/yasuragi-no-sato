@@ -5,6 +5,7 @@ import { collection, getDocs, deleteDoc, doc, updateDoc, query, orderBy } from "
 import { db } from "../../lib/firebase";
 import { News } from "../../types/news";
 import Link from "next/link";
+import Image from "next/image";
 import { Plus, Edit, Trash2, Eye, EyeOff, Calendar, Tag } from "lucide-react";
 import AdminAuthGuard from "../../components/admin/AdminAuthGuard";
 import { Header, Footer } from "../../components";
@@ -189,11 +190,12 @@ export default function AdminNewsPage() {
 
                     {/* サムネイル */}
                     {news.images && news.images.length > 0 && (
-                      <div className="ml-4 w-32 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
+                      <div className="ml-4 w-32 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
+                        <Image
                           src={news.images[0].url}
                           alt={news.images[0].alt}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                       </div>
                     )}

@@ -1,7 +1,7 @@
 // Firestore にお知らせ初期データを投入するスクリプト
 // 実行: npx tsx scripts/seed-news.ts
 
-import { initializeApp, cert } from "firebase-admin/app";
+import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
 // サービスアカウントキーがない場合は環境変数で認証

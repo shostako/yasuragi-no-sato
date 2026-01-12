@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import NextImage from "next/image";
 import { NewsImage } from "../../types/news";
 import { X, Upload, Image as ImageIcon } from "lucide-react";
 
@@ -103,11 +104,12 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {images.map((image, index) => (
             <div key={index} className="relative group">
-              <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                <img
+              <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
+                <NextImage
                   src={image.url}
                   alt={image.alt}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
 

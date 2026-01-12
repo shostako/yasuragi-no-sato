@@ -12,6 +12,7 @@ import AdminAuthGuard from "../../../../components/admin/AdminAuthGuard";
 import { Header, Footer } from "../../../../components";
 import { ArrowLeft, Save, Eye } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const categories: NewsCategory[] = ["お知らせ", "イベント", "採用", "メディア"];
 
@@ -363,7 +364,9 @@ export default function EditNewsPage() {
                   >
                     {formData.images.map((img, i) => (
                       <div key={i}>
-                        <img src={img.url} alt={img.alt} className="rounded-lg" />
+                        <div className="relative aspect-video">
+                          <Image src={img.url} alt={img.alt} fill className="rounded-lg object-cover" />
+                        </div>
                         {img.caption && (
                           <p className="text-sm text-gray-600 mt-1">{img.caption}</p>
                         )}
