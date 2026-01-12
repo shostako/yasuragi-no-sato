@@ -1,21 +1,21 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-11 17:53
-- **ステータス**: Phase 3完了・管理者モード機能追加
+- **最終更新**: 2026-01-13 07:17
+- **ステータス**: セキュリティ改善・ESLint修正完了
 
 ## 環境情報
 - **フレームワーク**: Next.js 16.1.1 (App Router)
 - **React**: 19.2.3
 - **Tailwind CSS**: 4.x
-- **バックエンド**: Firebase (Firestore, Auth)
+- **バックエンド**: Firebase (Firestore, Auth, Storage)
 - **Firebaseプロジェクト**: yasuragi-no-sato
 - **GitHub**: https://github.com/shostako/yasuragi-no-sato
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
-- `91d4dbe` feat: 管理者モード機能を追加
-- `9afaae4` docs: PROGRESS.md更新（管理者権限機能追加）
+- `76d126f` refactor: img→next/image、未使用import削除
+- `b34e564` fix: ESLintエラー修正・ドキュメント更新
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -60,6 +60,15 @@
 - [x] 公開/下書き切り替え機能
 - [x] 投稿削除機能
 
+### Phase 4: セキュリティ改善（2026-01-13）
+- [x] Firestore Security Rules作成・デプロイ
+- [x] /admin/setupに環境変数ガード追加
+- [x] /admin/seedにAdminAuthGuard追加
+- [x] ESLintエラー5件修正
+- [x] CLAUDE.md修正（Supabase→Firebase記載更新）
+- [x] next.config.tsにFirebase Storageドメイン追加
+- [x] img→next/image変換（7箇所）
+
 ### その他
 - [x] ヘッダーナビゲーション改善（折り返し防止）
 - [x] モバイルメニュー改善（右寄せ・狭幅・外タップで閉じる）
@@ -69,6 +78,7 @@
 - [x] アクセスページGoogle Maps埋め込み（都庁の住所で仮設定）
 - [x] モバイル表示の横はみ出し問題修正
 - [x] 管理者モード機能（編集モードトグル、インライン編集ボタン）
+- [x] 管理画面に共通Header/Footer追加
 
 ## Firestoreコレクション
 | コレクション | 用途 | フィールド |
@@ -84,6 +94,16 @@
 - [ ] 実際の施設情報への差し替え（住所、電話番号、アクセス方法等）
 
 ## 次セッションへの引き継ぎ
+
+### Codexレビュー残課題（2026-01-13）
+| 優先度 | 問題 | 詳細 |
+|--------|------|------|
+| 高 | 無認証書き込み | contacts/reservationsが`allow create: if true`で開放、フィールド検証なし |
+| 中 | newsクエリ不整合 | 公開ページのnews取得に`where(published == true)`がない |
+| 中 | XSSリスク | news/[id]/page.tsxでdangerouslySetInnerHTML使用、サニタイズなし |
+| 低 | admin/setup矛盾 | usersのrole更新をrulesで禁止したため、環境変数でページを有効化しても更新失敗 |
+
+### 環境・アクセス情報
 - **本番稼働中**: https://yasuragi-no-sato.vercel.app
 - **管理画面**: http://localhost:3000/admin/news（ログイン必要）
 - **依頼者向け資料**: docs/ フォルダに説明テキストあり
@@ -94,11 +114,8 @@
 ### 管理画面の使い方
 
 #### 初回セットアップ（管理者設定）
-1. `/register` で会員登録（または既存アカウントでログイン）
-2. `/admin/setup` にアクセス
-3. 「このユーザーを管理者に設定」ボタンをクリック
-4. 管理者に設定されたことを確認
-5. セキュリティのため `/admin/setup` ページを削除
+1. Firebase Consoleからusersコレクションで直接role: "admin"を設定
+2. または、環境変数`NEXT_PUBLIC_ENABLE_ADMIN_SETUP=true`を設定して/admin/setupを有効化
 
 #### 通常の使い方（管理者モード）
 1. `/login` から管理者アカウントでログイン
