@@ -1,8 +1,8 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-13 07:17
-- **ステータス**: セキュリティ改善・ESLint修正完了
+- **最終更新**: 2026-01-13 07:31
+- **ステータス**: 本番動作確認・newsクエリ修正完了
 
 ## 環境情報
 - **フレームワーク**: Next.js 16.1.1 (App Router)
@@ -14,8 +14,8 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
-- `76d126f` refactor: img→next/image、未使用import削除
-- `b34e564` fix: ESLintエラー修正・ドキュメント更新
+- `f3bd01c` fix: newsクエリにwhere published条件追加（Security Rules対応）
+- `ca65423` docs: PROGRESS.md更新・作業ログ追加（セキュリティ改善）
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -68,6 +68,8 @@
 - [x] CLAUDE.md修正（Supabase→Firebase記載更新）
 - [x] next.config.tsにFirebase Storageドメイン追加
 - [x] img→next/image変換（7箇所）
+- [x] newsクエリにwhere published条件追加（Security Rules対応）
+- [x] 本番サイト全ページ動作確認（Playwright MCP）
 
 ### その他
 - [x] ヘッダーナビゲーション改善（折り返し防止）
@@ -96,12 +98,12 @@
 ## 次セッションへの引き継ぎ
 
 ### Codexレビュー残課題（2026-01-13）
-| 優先度 | 問題 | 詳細 |
-|--------|------|------|
-| 高 | 無認証書き込み | contacts/reservationsが`allow create: if true`で開放、フィールド検証なし |
-| 中 | newsクエリ不整合 | 公開ページのnews取得に`where(published == true)`がない |
-| 中 | XSSリスク | news/[id]/page.tsxでdangerouslySetInnerHTML使用、サニタイズなし |
-| 低 | admin/setup矛盾 | usersのrole更新をrulesで禁止したため、環境変数でページを有効化しても更新失敗 |
+| 優先度 | 問題 | 詳細 | 状態 |
+|--------|------|------|------|
+| 高 | 無認証書き込み | contacts/reservationsの`allow create: if true`、フィールド検証なし | 未対応 |
+| 中 | newsクエリ不整合 | news取得で`where(published == true)`がなかった | **修正済** |
+| 中 | XSSリスク | news詳細ページでサニタイズなし | 未対応 |
+| 低 | admin/setup矛盾 | role更新がrulesで禁止されている | 未対応 |
 
 ### 環境・アクセス情報
 - **本番稼働中**: https://yasuragi-no-sato.vercel.app
