@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams, notFound } from "next/navigation";
-import { doc, getDoc, collection, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, query, orderBy, where, limit, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { Header, Footer } from "../../components";
 import { categoryStyles } from "../../data/news";
@@ -128,13 +128,18 @@ export default function NewsDetailPage() {
 
         // 他のお知らせを取得
         const newsRef = collection(db, "news");
-        const q = query(newsRef, orderBy("date", "desc"), limit(10));
+        const q = query(
+          newsRef,
+          where("published", "==", true),
+          orderBy("date", "desc"),
+          limit(4)
+        );
         const snapshot = await getDocs(q);
 
         const others: NewsItem[] = [];
         snapshot.forEach((doc) => {
           const d = doc.data();
-          if (doc.id !== id && d.published && others.length < 3) {
+          if (doc.id !== id && others.length < 3) {
             others.push({
               id: doc.id,
               date: d.date,

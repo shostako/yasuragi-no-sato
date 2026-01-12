@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import { collection, query, orderBy, where, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { Header, Footer } from "../components";
 import { categoryStyles } from "../data/news";
@@ -33,23 +33,25 @@ export default function NewsPage() {
 
       try {
         const newsRef = collection(db, "news");
-        const q = query(newsRef, orderBy("date", "desc"));
+        const q = query(
+          newsRef,
+          where("published", "==", true),
+          orderBy("date", "desc")
+        );
         const snapshot = await getDocs(q);
 
         const items: NewsItem[] = [];
         snapshot.forEach((doc) => {
           const data = doc.data();
-          if (data.published) {
-            items.push({
-              id: doc.id,
-              date: data.date,
-              category: data.category,
-              title: data.title,
-              summary: data.summary,
-              image: data.image,
-              published: data.published,
-            });
-          }
+          items.push({
+            id: doc.id,
+            date: data.date,
+            category: data.category,
+            title: data.title,
+            summary: data.summary,
+            image: data.image,
+            published: data.published,
+          });
         });
 
         setNewsItems(items);
