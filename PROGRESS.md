@@ -1,8 +1,8 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-13 07:31
-- **ステータス**: 本番動作確認・newsクエリ修正完了
+- **最終更新**: 2026-01-15 20:37
+- **ステータス**: 管理者アカウント再設定・インデックス作成完了
 
 ## 環境情報
 - **フレームワーク**: Next.js 16.1.1 (App Router)
@@ -14,8 +14,10 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
+- `f4ddbf7` chore: 一時ファイル削除
+- `d89377e` chore: .gitignoreにtmpclaude-*追加、一時ファイル削除
+- `700549a` docs: PROGRESS.md更新・作業ログ追加（newsクエリ修正・動作確認）
 - `f3bd01c` fix: newsクエリにwhere published条件追加（Security Rules対応）
-- `ca65423` docs: PROGRESS.md更新・作業ログ追加（セキュリティ改善）
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -71,6 +73,12 @@
 - [x] newsクエリにwhere published条件追加（Security Rules対応）
 - [x] 本番サイト全ページ動作確認（Playwright MCP）
 
+### Phase 5: 管理者設定・インデックス（2026-01-15）
+- [x] Firebase Authentication: ダミーアカウント削除
+- [x] 本番用管理者アカウント作成（shostakovich1117@gmail.com）
+- [x] Firestore usersコレクション更新（role: admin）
+- [x] Firestoreコンポジットインデックス作成（news: published + date）
+
 ### その他
 - [x] ヘッダーナビゲーション改善（折り返し防止）
 - [x] モバイルメニュー改善（右寄せ・狭幅・外タップで閉じる）
@@ -89,6 +97,11 @@
 | news | お知らせ | title, category, content, images[], imageLayout, published, date |
 | reservations | 見学予約 | name, email, phone, date, time, createdAt |
 | users | ユーザー管理 | uid, email, displayName, role (admin/member), createdAt |
+
+## Firestoreインデックス
+| コレクション | フィールド | 用途 |
+|-------------|-----------|------|
+| news | published (↑), date (↓) | 公開済み記事を日付降順で取得 |
 
 ## 未完了・保留
 - [ ] 独自ドメイン取得・設定（依頼者判断待ち）
@@ -115,9 +128,12 @@
 
 ### 管理画面の使い方
 
-#### 初回セットアップ（管理者設定）
-1. Firebase Consoleからusersコレクションで直接role: "admin"を設定
-2. または、環境変数`NEXT_PUBLIC_ENABLE_ADMIN_SETUP=true`を設定して/admin/setupを有効化
+#### 管理者アカウント（2026-01-15設定）
+| 項目 | 値 |
+|------|-----|
+| メール | shostakovich1117@gmail.com |
+| パスワード | changeme（**本番運用前に要変更**） |
+| UID | IbFyQ3JcYRbnznKSsXuBesLT9np1 |
 
 #### 通常の使い方（管理者モード）
 1. `/login` から管理者アカウントでログイン
