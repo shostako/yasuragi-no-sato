@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, deleteDoc, doc, updateDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc, setDoc, query, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { Calendar, Clock, User, Phone, Mail, Users, Trash2, Check, X, Filter } from "lucide-react";
 import AdminAuthGuard from "../../components/admin/AdminAuthGuard";
@@ -83,13 +83,31 @@ export default function AdminReservationsPage() {
   const handleStatusChange = async (id: string, newStatus: "confirmed" | "cancelled") => {
     if (!db) return;
 
+    const reservation = reservations.find((r) => r.id === id);
+    if (!reservation) return;
+
     const actionLabel = newStatus === "confirmed" ? "確定" : "キャンセル";
     if (!confirm(`この予約を${actionLabel}にしますか？`)) return;
 
     try {
+      // ステータス更新
       await updateDoc(doc(db, "reservations", id), {
         status: newStatus,
       });
+
+      // bookedSlotsの操作
+      const slotId = `${reservation.date}_${reservation.timeSlot}`;
+      if (newStatus === "cancelled") {
+        // キャンセル時はbookedSlotsから削除
+        await deleteDoc(doc(db, "bookedSlots", slotId));
+      } else if (newStatus === "confirmed") {
+        // 確定時はbookedSlotsに追加（キャンセルからの復帰用）
+        await setDoc(doc(db, "bookedSlots", slotId), {
+          date: reservation.date,
+          timeSlot: reservation.timeSlot,
+          reservationId: id,
+        });
+      }
 
       setReservations(
         reservations.map((r) =>
@@ -106,8 +124,19 @@ export default function AdminReservationsPage() {
     if (!confirm("この予約を削除しますか？この操作は取り消せません。")) return;
     if (!db) return;
 
+    const reservation = reservations.find((r) => r.id === id);
+    if (!reservation) return;
+
     try {
+      // 予約ドキュメント削除
       await deleteDoc(doc(db, "reservations", id));
+
+      // bookedSlotsも削除（キャンセル済みでなければ）
+      if (reservation.status !== "cancelled") {
+        const slotId = `${reservation.date}_${reservation.timeSlot}`;
+        await deleteDoc(doc(db, "bookedSlots", slotId));
+      }
+
       setReservations(reservations.filter((r) => r.id !== id));
     } catch (err) {
       console.error("Error deleting reservation:", err);

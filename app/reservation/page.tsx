@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
+import { collection, doc, serverTimestamp, getDocs, writeBatch } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useAuth } from "../contexts/AuthContext";
 import { Header, Footer } from "../components";
@@ -77,19 +77,18 @@ export default function ReservationPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
-  // 予約済み時間枠を取得
+  // 予約済み時間枠を取得（bookedSlotsコレクションから）
   useEffect(() => {
     const fetchBookedSlots = async () => {
       if (!db) return;
 
       try {
-        const reservationsRef = collection(db, "reservations");
-        const q = query(reservationsRef, where("status", "!=", "cancelled"));
-        const snapshot = await getDocs(q);
+        const bookedSlotsRef = collection(db, "bookedSlots");
+        const snapshot = await getDocs(bookedSlotsRef);
 
         const slots: Record<string, string[]> = {};
-        snapshot.forEach((doc) => {
-          const data = doc.data();
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
           if (!slots[data.date]) {
             slots[data.date] = [];
           }
@@ -209,8 +208,12 @@ export default function ReservationPage() {
         throw new Error("Firebase is not initialized");
       }
 
-      // Firestoreに予約を保存
-      await addDoc(collection(db, "reservations"), {
+      // バッチ書き込みでreservationsとbookedSlotsに同時保存
+      const batch = writeBatch(db);
+
+      // 予約ドキュメント
+      const reservationRef = doc(collection(db, "reservations"));
+      batch.set(reservationRef, {
         date: formData.date,
         timeSlot: formData.timeSlot,
         name: formData.name,
@@ -224,6 +227,17 @@ export default function ReservationPage() {
         uid: user?.uid || null, // ログインユーザーのID（紐付け用）
         createdAt: serverTimestamp(),
       });
+
+      // 予約済み枠ドキュメント（公開用）
+      const slotId = `${formData.date}_${formData.timeSlot}`;
+      const bookedSlotRef = doc(db, "bookedSlots", slotId);
+      batch.set(bookedSlotRef, {
+        date: formData.date,
+        timeSlot: formData.timeSlot,
+        reservationId: reservationRef.id,
+      });
+
+      await batch.commit();
 
       setIsSubmitted(true);
     } catch (error) {

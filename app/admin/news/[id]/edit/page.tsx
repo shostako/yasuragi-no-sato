@@ -35,6 +35,7 @@ export default function EditNewsPage() {
     imageLayout: "single",
     date: "",
     published: false,
+    memberOnly: false,
   });
 
   useEffect(() => {
@@ -67,6 +68,7 @@ export default function EditNewsPage() {
         imageLayout: data.imageLayout || "single",
         date: data.date || "",
         published: data.published || false,
+        memberOnly: data.memberOnly || false,
       });
     } catch (err) {
       console.error("Error fetching news:", err);
@@ -138,6 +140,7 @@ export default function EditNewsPage() {
         imageLayout: formData.imageLayout,
         date: formData.date,
         published: formData.published,
+        memberOnly: formData.memberOnly,
         updatedAt: serverTimestamp(),
       });
 
@@ -296,7 +299,7 @@ export default function EditNewsPage() {
           </div>
 
           {/* 公開設定 */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-6 space-y-4">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -310,6 +313,23 @@ export default function EditNewsPage() {
                 この記事を公開する
                 {!formData.published && (
                   <span className="ml-2 text-sm text-gray-500">（下書き保存）</span>
+                )}
+              </span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.memberOnly}
+                onChange={(e) =>
+                  setFormData({ ...formData, memberOnly: e.target.checked })
+                }
+                className="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary"
+              />
+              <span className="text-gray-700">
+                会員限定記事にする
+                {formData.memberOnly && (
+                  <span className="ml-2 text-sm text-gray-500">（ログインユーザーのみ閲覧可）</span>
                 )}
               </span>
             </label>

@@ -40,12 +40,25 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // bookedSlots コレクション（予約済み枠の公開情報）
+    // - 誰でも読み取り可（カレンダー表示用）
+    // - 誰でも追加可（予約作成時、reservationsと同時書き込み）
+    // - 削除は管理者のみ（キャンセル時）
+    match /bookedSlots/{slotId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
     // news コレクション
-    // - 公開済み（published == true）は誰でも読み取り可
+    // - 公開済み かつ 会員限定でない → 誰でも読み取り可
+    // - 公開済み かつ 会員限定 → 認証ユーザーのみ読み取り可
     // - 未公開は管理者のみ読み取り可
     // - 作成・編集・削除は管理者のみ
     match /news/{newsId} {
-      allow read: if resource.data.published == true || isAdmin();
+      allow read: if isAdmin() ||
+        (resource.data.published == true && (resource.data.memberOnly != true || isAuthenticated()));
       allow create, update, delete: if isAdmin();
     }
 

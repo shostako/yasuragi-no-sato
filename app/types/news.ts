@@ -19,6 +19,7 @@ export interface News {
   imageLayout: ImageLayout;
   date: string; // "2026.01.08" format
   published: boolean;
+  memberOnly: boolean; // 会員限定記事
   createdAt: Timestamp | null;
   updatedAt: Timestamp | null;
 }
@@ -32,4 +33,5 @@ export interface NewsFormData {
   imageLayout: ImageLayout;
   date: string;
   published: boolean;
+  memberOnly: boolean; // 会員限定記事
 }
