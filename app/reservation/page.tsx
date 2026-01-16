@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { useAuth } from "../contexts/AuthContext";
 import { Header, Footer } from "../components";
 
 // 時間枠の定義
@@ -53,6 +54,7 @@ function formatDate(year: number, month: number, day: number): string {
 }
 
 export default function ReservationPage() {
+  const { user } = useAuth();
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
@@ -219,6 +221,7 @@ export default function ReservationPage() {
         participants: formData.participants,
         message: formData.message || null,
         status: "pending", // 確認待ち
+        uid: user?.uid || null, // ログインユーザーのID（紐付け用）
         createdAt: serverTimestamp(),
       });
 

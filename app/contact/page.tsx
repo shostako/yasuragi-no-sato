@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { useAuth } from "../contexts/AuthContext";
 import { Header, Footer } from "../components";
 
 // お問い合わせ種別
@@ -28,6 +29,7 @@ interface FormData {
 }
 
 export default function ContactPage() {
+  const { user } = useAuth();
   const [formData, setFormData] = useState<FormData>({
     inquiryType: "",
     name: "",
@@ -97,6 +99,7 @@ export default function ContactPage() {
         relationship: formData.relationship || null,
         message: formData.message,
         status: "new", // 未対応
+        uid: user?.uid || null, // ログインユーザーのID（紐付け用）
         createdAt: serverTimestamp(),
       });
 

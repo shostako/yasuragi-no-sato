@@ -22,18 +22,22 @@ service cloud.firestore {
 
     // contacts コレクション
     // - 誰でも追加可（お問い合わせ送信）
-    // - 読み取り・編集・削除は管理者のみ
+    // - 自分のお問い合わせは読み取り可（uid一致）
+    // - 編集・削除は管理者のみ
     match /contacts/{contactId} {
       allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
+      allow update, delete: if isAdmin();
     }
 
     // reservations コレクション
     // - 誰でも追加可（見学予約申込み）
-    // - 読み取り・編集・削除は管理者のみ（個人情報保護）
+    // - 自分の予約は読み取り可（uid一致）
+    // - 編集・削除は管理者のみ（個人情報保護）
     match /reservations/{reservationId} {
       allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
+      allow update, delete: if isAdmin();
     }
 
     // news コレクション
