@@ -14,10 +14,10 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
+- `ebe65bb` feat: 管理画面・会員機能実装
+- `56d00bb` docs: PROGRESS.md・作業ログ更新（管理者アカウント再設定・インデックス作成）
 - `f4ddbf7` chore: 一時ファイル削除
-- `d89377e` chore: .gitignoreにtmpclaude-*追加、一時ファイル削除
 - `700549a` docs: PROGRESS.md更新・作業ログ追加（newsクエリ修正・動作確認）
-- `f3bd01c` fix: newsクエリにwhere published条件追加（Security Rules対応）
 
 ## 完了済み
 ### Phase 1: 基本ページ
