@@ -14,10 +14,10 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
+- `09869da` feat: ダブルブッキング対策・会員限定お知らせ機能
 - `ebe65bb` feat: 管理画面・会員機能実装
 - `56d00bb` docs: PROGRESS.md・作業ログ更新（管理者アカウント再設定・インデックス作成）
 - `f4ddbf7` chore: 一時ファイル削除
-- `700549a` docs: PROGRESS.md更新・作業ログ追加（newsクエリ修正・動作確認）
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -79,6 +79,15 @@
 - [x] Firestore usersコレクション更新（role: admin）
 - [x] Firestoreコンポジットインデックス作成（news: published + date）
 
+### Phase 6: ダブルブッキング対策・会員限定お知らせ（2026-01-16）
+- [x] bookedSlotsコレクション新設（予約済み枠の公開情報）
+- [x] 予約作成時バッチ書き込み（reservations + bookedSlots）
+- [x] 管理画面キャンセル/復帰時bookedSlots同期
+- [x] News型にmemberOnlyフラグ追加
+- [x] 管理画面に「会員限定記事」チェックボックス追加
+- [x] /member/notificationsページ作成
+- [x] Security Rules更新（会員限定記事は認証ユーザーのみ閲覧可）
+
 ### その他
 - [x] ヘッダーナビゲーション改善（折り返し防止）
 - [x] モバイルメニュー改善（右寄せ・狭幅・外タップで閉じる）
@@ -93,10 +102,11 @@
 ## Firestoreコレクション
 | コレクション | 用途 | フィールド |
 |-------------|------|----------|
-| contacts | お問い合わせ | name, email, message, createdAt |
-| news | お知らせ | title, category, content, images[], imageLayout, published, date |
-| reservations | 見学予約 | name, email, phone, date, time, createdAt |
+| contacts | お問い合わせ | name, email, message, uid, status, createdAt |
+| news | お知らせ | title, category, content, images[], imageLayout, published, memberOnly, date |
+| reservations | 見学予約 | name, email, phone, date, timeSlot, participants, uid, status, createdAt |
 | users | ユーザー管理 | uid, email, displayName, role (admin/member), createdAt |
+| bookedSlots | 予約済み枠（公開） | date, timeSlot, reservationId |
 
 ## Firestoreインデックス
 | コレクション | フィールド | 用途 |
@@ -108,17 +118,17 @@
 - [ ] 商用ホスティング検討（Vercel Pro / Cloudflare Pages等）
 - [ ] 実際の施設情報への差し替え（住所、電話番号、アクセス方法等）
 
-### 管理者向け機能（未実装）
+### 管理者向け機能
 - [x] 予約管理画面（/admin/reservations）- 一覧・承認・キャンセル ✅ 2026-01-16完了
 - [x] お問い合わせ管理画面（/admin/contacts）- 一覧・対応状況管理 ✅ 2026-01-16完了
+- [x] 予約済み枠の表示修正（bookedSlotsコレクション導入）✅ 2026-01-16完了
 - [ ] 新規予約・問い合わせの通知機能（メール or Firebase Cloud Messaging）
-- [ ] 予約済み枠の表示修正（現状Security Rulesで一般ユーザーはread不可→ダブルブッキングの恐れ）
 
-### 会員機能（未実装）
+### 会員機能
 - [x] 予約・問い合わせにユーザーID紐付け（ログイン時は自動、非ログイン時は任意）✅ 2026-01-16完了
 - [x] /member/reservations - 会員の予約履歴 ✅ 2026-01-16完了
 - [x] /member/inquiries - 会員のお問い合わせ履歴 ✅ 2026-01-16完了
-- [ ] /member/notifications - 会員向けお知らせ
+- [x] /member/notifications - 会員限定お知らせ ✅ 2026-01-16完了
 - [x] /member/profile - 会員情報編集 ✅ 2026-01-16完了
 
 ## 次セッションへの引き継ぎ
