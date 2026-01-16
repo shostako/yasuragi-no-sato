@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, deleteDoc, doc, updateDoc, setDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc, setDoc, query, orderBy, writeBatch } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { Calendar, Clock, User, Phone, Mail, Users, Trash2, Check, X, Filter } from "lucide-react";
 import AdminAuthGuard from "../../components/admin/AdminAuthGuard";
@@ -90,24 +90,29 @@ export default function AdminReservationsPage() {
     if (!confirm(`この予約を${actionLabel}にしますか？`)) return;
 
     try {
+      // バッチ処理でアトミックに更新
+      const batch = writeBatch(db);
+      const slotId = `${reservation.date}_${reservation.timeSlot}`;
+
       // ステータス更新
-      await updateDoc(doc(db, "reservations", id), {
+      batch.update(doc(db, "reservations", id), {
         status: newStatus,
       });
 
       // bookedSlotsの操作
-      const slotId = `${reservation.date}_${reservation.timeSlot}`;
       if (newStatus === "cancelled") {
         // キャンセル時はbookedSlotsから削除
-        await deleteDoc(doc(db, "bookedSlots", slotId));
+        batch.delete(doc(db, "bookedSlots", slotId));
       } else if (newStatus === "confirmed") {
         // 確定時はbookedSlotsに追加（キャンセルからの復帰用）
-        await setDoc(doc(db, "bookedSlots", slotId), {
+        batch.set(doc(db, "bookedSlots", slotId), {
           date: reservation.date,
           timeSlot: reservation.timeSlot,
           reservationId: id,
         });
       }
+
+      await batch.commit();
 
       setReservations(
         reservations.map((r) =>
@@ -128,14 +133,19 @@ export default function AdminReservationsPage() {
     if (!reservation) return;
 
     try {
+      // バッチ処理でアトミックに削除
+      const batch = writeBatch(db);
+
       // 予約ドキュメント削除
-      await deleteDoc(doc(db, "reservations", id));
+      batch.delete(doc(db, "reservations", id));
 
       // bookedSlotsも削除（キャンセル済みでなければ）
       if (reservation.status !== "cancelled") {
         const slotId = `${reservation.date}_${reservation.timeSlot}`;
-        await deleteDoc(doc(db, "bookedSlots", slotId));
+        batch.delete(doc(db, "bookedSlots", slotId));
       }
+
+      await batch.commit();
 
       setReservations(reservations.filter((r) => r.id !== id));
     } catch (err) {

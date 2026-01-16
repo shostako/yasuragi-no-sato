@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { collection, doc, serverTimestamp, getDocs, writeBatch } from "firebase/firestore";
+import { collection, doc, serverTimestamp, getDocs, runTransaction, getDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useAuth } from "../contexts/AuthContext";
 import { Header, Footer } from "../components";
@@ -208,36 +208,41 @@ export default function ReservationPage() {
         throw new Error("Firebase is not initialized");
       }
 
-      // バッチ書き込みでreservationsとbookedSlotsに同時保存
-      const batch = writeBatch(db);
-
-      // 予約ドキュメント
-      const reservationRef = doc(collection(db, "reservations"));
-      batch.set(reservationRef, {
-        date: formData.date,
-        timeSlot: formData.timeSlot,
-        name: formData.name,
-        furigana: formData.furigana,
-        email: formData.email,
-        phone: formData.phone,
-        relationship: formData.relationship || null,
-        participants: formData.participants,
-        message: formData.message || null,
-        status: "pending", // 確認待ち
-        uid: user?.uid || null, // ログインユーザーのID（紐付け用）
-        createdAt: serverTimestamp(),
-      });
-
-      // 予約済み枠ドキュメント（公開用）
       const slotId = `${formData.date}_${formData.timeSlot}`;
       const bookedSlotRef = doc(db, "bookedSlots", slotId);
-      batch.set(bookedSlotRef, {
-        date: formData.date,
-        timeSlot: formData.timeSlot,
-        reservationId: reservationRef.id,
-      });
+      const reservationRef = doc(collection(db, "reservations"));
 
-      await batch.commit();
+      // トランザクションで競合状態を防止
+      await runTransaction(db, async (transaction) => {
+        // 1. スロットが既に予約されていないか確認
+        const slotSnap = await transaction.get(bookedSlotRef);
+        if (slotSnap.exists()) {
+          throw new Error("SLOT_ALREADY_BOOKED");
+        }
+
+        // 2. 予約ドキュメント作成
+        transaction.set(reservationRef, {
+          date: formData.date,
+          timeSlot: formData.timeSlot,
+          name: formData.name,
+          furigana: formData.furigana,
+          email: formData.email,
+          phone: formData.phone,
+          relationship: formData.relationship || null,
+          participants: Number(formData.participants), // 明示的にnumber変換
+          message: formData.message || null,
+          status: "pending",
+          uid: user?.uid || null,
+          createdAt: serverTimestamp(),
+        });
+
+        // 3. 予約済み枠ドキュメント作成
+        transaction.set(bookedSlotRef, {
+          date: formData.date,
+          timeSlot: formData.timeSlot,
+          reservationId: reservationRef.id,
+        });
+      });
 
       // メール通知（失敗しても予約は成功扱い）
       try {
@@ -264,7 +269,22 @@ export default function ReservationPage() {
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting reservation:", error);
-      alert("予約の送信に失敗しました。もう一度お試しください。");
+      if (error instanceof Error && error.message === "SLOT_ALREADY_BOOKED") {
+        alert("申し訳ございません。選択された時間枠は既に予約されています。別の日時をお選びください。");
+        // 予約済み枠を再取得してUIを更新
+        const bookedSlotsRef = collection(db!, "bookedSlots");
+        const snapshot = await getDocs(bookedSlotsRef);
+        const slots: Record<string, string[]> = {};
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (!slots[data.date]) slots[data.date] = [];
+          slots[data.date].push(data.timeSlot);
+        });
+        setBookedSlots(slots);
+        setFormData((prev) => ({ ...prev, timeSlot: "" }));
+      } else {
+        alert("予約の送信に失敗しました。もう一度お試しください。");
+      }
     } finally {
       setIsSubmitting(false);
     }

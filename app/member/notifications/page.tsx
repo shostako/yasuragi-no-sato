@@ -60,8 +60,11 @@ export default function MemberNotificationsPage() {
 
     if (user) {
       fetchMemberNews();
+    } else if (!loading) {
+      // ユーザーがいない場合はローディングを解除
+      setIsLoadingData(false);
     }
-  }, [user]);
+  }, [user, loading]);
 
   if (loading || isLoadingData) {
     return (
