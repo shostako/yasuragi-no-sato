@@ -239,6 +239,27 @@ export default function ReservationPage() {
 
       await batch.commit();
 
+      // メール通知（失敗しても予約は成功扱い）
+      try {
+        await fetch("/api/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "reservation",
+            data: {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              date: formData.date,
+              timeSlot: timeSlots.find((s) => s.id === formData.timeSlot)?.label || formData.timeSlot,
+              participants: formData.participants,
+            },
+          }),
+        });
+      } catch (notifyError) {
+        console.error("Email notify error:", notifyError);
+      }
+
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting reservation:", error);

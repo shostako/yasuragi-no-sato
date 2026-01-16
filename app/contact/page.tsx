@@ -103,6 +103,25 @@ export default function ContactPage() {
         createdAt: serverTimestamp(),
       });
 
+      // メール通知（失敗しても送信は成功扱い）
+      try {
+        const inquiryLabel = inquiryTypes.find((t) => t.id === formData.inquiryType)?.label || formData.inquiryType;
+        await fetch("/api/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "contact",
+            data: {
+              name: formData.name,
+              email: formData.email,
+              message: `【${inquiryLabel}】\n${formData.message}`,
+            },
+          }),
+        });
+      } catch (notifyError) {
+        console.error("Email notify error:", notifyError);
+      }
+
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting contact form:", error);
