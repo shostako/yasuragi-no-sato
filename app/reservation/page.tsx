@@ -248,6 +248,7 @@ export default function ReservationPage() {
             type: "reservation",
             data: {
               name: formData.name,
+              furigana: formData.furigana,
               email: formData.email,
               phone: formData.phone,
               date: formData.date,

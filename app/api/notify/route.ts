@@ -5,6 +5,7 @@ interface NotifyRequest {
   type: "reservation" | "contact";
   data: {
     name: string;
+    furigana?: string;
     email: string;
     phone?: string;
     date?: string;
@@ -71,6 +72,10 @@ function formatEmail(body: NotifyRequest): { subject: string; html: string } {
               <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>${data.name}</strong> 様</td>
             </tr>
             <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #eee; color: #666;">フリガナ</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">${data.furigana || ""}</td>
+            </tr>
+            <tr>
               <td style="padding: 10px; border-bottom: 1px solid #eee; color: #666;">メール</td>
               <td style="padding: 10px; border-bottom: 1px solid #eee;">${data.email}</td>
             </tr>
@@ -121,8 +126,16 @@ function formatEmail(body: NotifyRequest): { subject: string; html: string } {
               <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>${data.name}</strong> 様</td>
             </tr>
             <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #eee; color: #666;">フリガナ</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">${data.furigana || ""}</td>
+            </tr>
+            <tr>
               <td style="padding: 10px; border-bottom: 1px solid #eee; color: #666;">メール</td>
               <td style="padding: 10px; border-bottom: 1px solid #eee;">${data.email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #eee; color: #666;">電話番号</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">${data.phone || "未入力"}</td>
             </tr>
           </table>
 

@@ -113,7 +113,9 @@ export default function ContactPage() {
             type: "contact",
             data: {
               name: formData.name,
+              furigana: formData.furigana,
               email: formData.email,
+              phone: formData.phone,
               message: `【${inquiryLabel}】\n${formData.message}`,
             },
           }),
