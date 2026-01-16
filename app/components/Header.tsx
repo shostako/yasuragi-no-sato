@@ -17,7 +17,12 @@ const navItems = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { user, loading, isAdmin, adminMode, setAdminMode } = useAuth();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,7 +99,7 @@ export default function Header() {
           {/* CTAボタン */}
           <div className="hidden xl:flex items-center gap-3">
             {/* 管理者モードトグル */}
-            {isAdmin && (
+            {mounted && isAdmin && (
               <button
                 onClick={() => setAdminMode(!adminMode)}
                 className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full transition-colors whitespace-nowrap ${
@@ -118,25 +123,27 @@ export default function Header() {
               </svg>
               <span className="font-medium">0120-XXX-XXX</span>
             </a>
-            {!loading && (
-              user ? (
-                <Link
-                  href="/member"
-                  className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors whitespace-nowrap"
-                >
-                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  会員ページ
-                </Link>
-              ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors whitespace-nowrap"
-                >
-                  ログイン
-                </Link>
-              )
+            {!mounted || loading ? (
+              <span className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-transparent whitespace-nowrap invisible">
+                ログイン
+              </span>
+            ) : user ? (
+              <Link
+                href="/member"
+                className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-colors whitespace-nowrap"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                会員ページ
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border-2 border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors whitespace-nowrap"
+              >
+                ログイン
+              </Link>
             )}
             <Link
               href="/reservation"
@@ -191,7 +198,7 @@ export default function Header() {
           ))}
           <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
             {/* 管理者モードトグル（モバイル） */}
-            {isAdmin && (
+            {mounted && isAdmin && (
               <button
                 onClick={() => setAdminMode(!adminMode)}
                 className={`w-full flex items-center justify-center gap-2 py-2.5 text-sm rounded-full font-medium mb-2 transition-colors ${
@@ -215,7 +222,7 @@ export default function Header() {
               </svg>
               <span className="font-medium">0120-XXX-XXX</span>
             </a>
-            {!loading && (
+            {mounted && !loading && (
               user ? (
                 <Link
                   href="/member"
