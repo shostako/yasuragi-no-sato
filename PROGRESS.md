@@ -1,8 +1,8 @@
 # プロジェクト進捗状況
 
 ## 現在の状態
-- **最終更新**: 2026-01-16
-- **ステータス**: Codexレビュー対応完了
+- **最終更新**: 2026-01-17
+- **ステータス**: インライン編集機能（Phase 1）実装完了
 
 ## 環境情報
 - **フレームワーク**: Next.js 16.1.1 (App Router)
@@ -14,10 +14,10 @@
 - **本番URL**: https://yasuragi-no-sato.vercel.app
 
 ## 直近のGitコミット
-- `f50686a` fix: メール通知にフリガナ・電話番号を追加
-- `00534f3` feat: メール通知機能追加（Resend）
-- `09869da` feat: ダブルブッキング対策・会員限定お知らせ機能
-- `ebe65bb` feat: 管理画面・会員機能実装
+- `d6d1986` feat: 会社概要・採用情報ページにインライン編集機能追加
+- `d8d66fb` feat: インライン編集機能（Phase 1）実装
+- `87bef41` fix: Hydration Error修正（認証状態の条件分岐）
+- `0ee6962` fix: Codexレビュー指摘対応
 
 ## 完了済み
 ### Phase 1: 基本ページ
@@ -103,6 +103,14 @@
 - [x] participants型変換修正（string→number）
 - [x] member/notifications ローディングハング修正
 
+### Phase 9: インライン編集機能（2026-01-17）
+- [x] EditableText コンポーネント作成（contentEditable使用）
+- [x] PageContentContext でFirestore連携（pageContentsコレクション）
+- [x] firestore.rules に pageContents ルール追加
+- [x] トップページ: HeroSection, ServicesSection, FeaturesSection, CTASection
+- [x] 会社概要ページ: PageHeader, AboutCTASection
+- [x] 採用情報ページ: RecruitHeroSection, RecruitCTASection
+
 ### その他
 - [x] ヘッダーナビゲーション改善（折り返し防止）
 - [x] モバイルメニュー改善（右寄せ・狭幅・外タップで閉じる）
@@ -122,6 +130,7 @@
 | reservations | 見学予約 | name, email, phone, date, timeSlot, participants, uid, status, createdAt |
 | users | ユーザー管理 | uid, email, displayName, role (admin/member), createdAt |
 | bookedSlots | 予約済み枠（公開） | date, timeSlot, reservationId |
+| pageContents | ページコンテンツ（インライン編集） | contents: Map<string, string>, updatedAt, updatedBy |
 
 ## Firestoreインデックス
 | コレクション | フィールド | 用途 |
@@ -147,6 +156,12 @@
 - [x] /member/profile - 会員情報編集 ✅ 2026-01-16完了
 
 ## 次セッションへの引き継ぎ
+
+### インライン編集機能 Phase 2候補
+- [ ] 画像編集機能（Firebase Storage連携）
+- [ ] フォント・色・サイズ変更UI
+- [ ] 下書き/公開ワークフロー
+- [ ] 履歴管理・元に戻す機能
 
 ### Codexレビュー残課題（2026-01-13） - 全件クローズ
 | 優先度 | 問題 | 詳細 | 状態 |
