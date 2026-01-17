@@ -62,6 +62,16 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // pageContents コレクション（ページコンテンツ管理）
+    // - 誰でも読み取り可（ページ表示用）
+    // - 作成・編集は管理者のみ
+    // - 削除は禁止（履歴保持のため）
+    match /pageContents/{pageId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
     // users コレクション
     // - 自分のドキュメントまたは管理者のみ読み取り可
     // - 作成は自分のドキュメントかつrole=memberのみ（サインアップ時）
