@@ -1,3 +1,16 @@
+# 介護施設やすらぎの郷 ホームページ
+
+介護施設やすらぎの郷のサイト。サービスの案内、予約とお問い合わせの受付、ニュース、会員ページ、管理画面を持つ。
+
+- 構成: Next.js 16（App Router）、Firebase（Firestore・Auth・Storage）、Tailwind CSS 4
+- 公開: Vercel のプロジェクト hpbuild（https://hpbuild.vercel.app）
+- 動かす Node: 22 以上（`package.json` の `engines`）
+- 変更履歴: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+以下は Next.js の雛形（create-next-app）の説明。
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
